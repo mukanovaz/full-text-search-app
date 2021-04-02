@@ -1,0 +1,47 @@
+{
+  "articles": {
+    "mappings": {
+      "properties": {
+        "author": {
+          "type": "keyword"
+        },
+        "category": {
+          "type": "keyword"
+        },
+        "comments": {
+          "properties": {
+            "author": {
+              "type": "keyword"
+            },
+            "date": {
+              "type": "date",
+              "format": "dd.MM.yyyy"
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "text": {
+              "type": "text"
+            }
+          }
+        },
+        "date": {
+          "type": "date",
+          "format": "dd.MM.yyyy"
+        },
+        "text": {
+          "type": "text"
+        },
+        "title": {
+          "type": "keyword"
+        },
+        "url": {
+          "type": "text"
+        },
+        "views": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}

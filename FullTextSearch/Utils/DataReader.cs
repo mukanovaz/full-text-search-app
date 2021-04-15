@@ -1,4 +1,4 @@
-﻿using FullTextSearch.Model;
+﻿using CrawlerIR2.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

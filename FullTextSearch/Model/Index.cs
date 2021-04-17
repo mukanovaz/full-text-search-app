@@ -1,6 +1,7 @@
 ﻿using CrawlerIR2.Interface;
 using CrawlerIR2.Models;
 using FullTextSearch.Interface;
+using FullTextSearch.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,20 @@ namespace FullTextSearch.Model
 {
     class Index : IIndexer, ISearcher
     {
-        Dictionary<string, List<Article>> InvertedIndex;
+        Dictionary<string, List<int>> InvertedIndex;
 
         public Index ()
         {
-            InvertedIndex = new Dictionary<string, List<Article>>();
+            InvertedIndex = new Dictionary<string, List<int>>();
         }
 
         public List<IResult> Search(string query)
         {
-            throw new NotImplementedException();
+            if (InvertedIndex.ContainsKey(query))
+            {
+                var res = InvertedIndex[query];
+            }
+            return null;
         }
 
         void IIndexer.Index(List<Article> documents)

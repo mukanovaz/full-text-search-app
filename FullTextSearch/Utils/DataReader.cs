@@ -31,10 +31,11 @@ namespace FullTextSearch.Utils
             }
         }
 
-        public List<Article> ReadData(string path, ref List<Article> articles)
+        public List<Article> ReadData(string path, ref List<Article> articles, string table)
         {
             if (!File.Exists(path)) return null;
 
+            Context context = new Context(table);
             XmlDocument doc = new XmlDocument();
             doc.Load(path);
 
@@ -44,19 +45,18 @@ namespace FullTextSearch.Utils
                 foreach (XmlElement comment in article.SelectSingleNode("Comments").ChildNodes)
                 {
                     string text_comment = comment.SelectSingleNode("Text").InnerText.Replace("\r", string.Empty).Replace("\t", string.Empty);
-
+                    DateTime date = DateTime.ParseExact(comment.SelectSingleNode("Date").InnerText, "dd.MM.yyyy", null); ;
                     comments.Add(new Comment()
                     {
                         Author = comment.SelectSingleNode("Author").InnerText,
-                        Id = comment.SelectSingleNode("Id").InnerText.Replace("\r", string.Empty).Replace("\t", string.Empty),
                         Text = text_comment,
-                        Date = comment.SelectSingleNode("Date").InnerText
+                        DateCreated = date
                     }); 
                 }
 
                 string text = article.SelectSingleNode("Text").InnerText.Replace("\r", string.Empty).Replace("\t", string.Empty);
               
-                articles.Add(new Article()
+                Article a = new Article()
                 {
                     Author = article.SelectSingleNode("Author").InnerText,
                     Category = article.SelectSingleNode("Category").InnerText,
@@ -66,8 +66,23 @@ namespace FullTextSearch.Utils
                     Text = text,
                     Date = article.SelectSingleNode("Date").InnerText,
                     Comments = comments
-                }); ;
+                };
+                try
+                {
+                    context.Articles.AddIfNotExists<Article>(a, x => x.ArticleId == a.ArticleId);
+                    articles.Add(a);
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
             }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex) { }
 
             return articles;
         }

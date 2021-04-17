@@ -1,7 +1,7 @@
 ﻿
 namespace FullTextSearch.View
 {
-    partial class SearchingPanel
+    partial class UCSearching
     {
         /// <summary> 
         /// Required designer variable.
@@ -90,6 +90,7 @@ namespace FullTextSearch.View
             this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // label3
             // 
@@ -167,7 +168,7 @@ namespace FullTextSearch.View
             this.textViewer1.Size = new System.Drawing.Size(529, 419);
             this.textViewer1.TabIndex = 11;
             // 
-            // SearchingPanel
+            // UCSearching
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -175,8 +176,9 @@ namespace FullTextSearch.View
             this.Controls.Add(this.textViewer1);
             this.Controls.Add(this.dgvHits);
             this.Controls.Add(this.panel1);
-            this.Name = "SearchingPanel";
+            this.Name = "UCSearching";
             this.Size = new System.Drawing.Size(1023, 515);
+            this.Load += new System.EventHandler(this.SearchingPanel_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHits)).EndInit();

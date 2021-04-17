@@ -121,12 +121,6 @@ namespace CrawlerIR2
                    .Replace("\n\n", "\n")
                    .Replace("&nbsp;", string.Empty)
                    .Replace("0x0B", string.Empty).Trim(),
-                    HtmlText = article.InnerHtml
-                   .Replace("&nbsp;", string.Empty)
-                   .Replace("0x0B", string.Empty).Trim(),
-                    TidyText = article.InnerText
-                   .Replace("&nbsp;", string.Empty)
-                   .Replace("0x0B", string.Empty).Trim(),
                     Comments = comments,
                     Category = category,
                     Url = articleUrl
@@ -147,11 +141,10 @@ namespace CrawlerIR2
             return new Comment()
             {
                 Author = author,
-                Date = date,
+                DateCreated = Convert.ToDateTime(date),
                 Text = item.InnerText.Replace("\r", string.Empty).Replace("\t", string.Empty).Replace("\n\n", "\n").Replace("&nbsp;", "").Trim(),
                 HtmlText = item.InnerHtml,
                 TidyText = item.InnerText,
-                Id = item.GetAttributeValue("id", string.Empty),
                 Url = url
             };
         }

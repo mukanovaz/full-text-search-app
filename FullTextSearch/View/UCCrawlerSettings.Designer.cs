@@ -1,7 +1,7 @@
 ﻿
 namespace FullTextSearch.View
 {
-    partial class DataSourcePanel
+    partial class UCCrawlerSettings
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,9 +29,20 @@ namespace FullTextSearch.View
         /// </summary>
         private void InitializeComponent()
         {
-            this.tbBaseURL = new System.Windows.Forms.TextBox();
+            this.pnlNewCrawler = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tbBaseURL = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.gbComments = new System.Windows.Forms.GroupBox();
+            this.tbXpToComment = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tbXpToCommentsUrl = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cbType = new System.Windows.Forms.ComboBox();
+            this.cbComments = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbXpToUrl = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -48,43 +59,66 @@ namespace FullTextSearch.View
             this.label12 = new System.Windows.Forms.Label();
             this.tbXpToTitle = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.cbType = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cbComments = new System.Windows.Forms.CheckBox();
-            this.gbComments = new System.Windows.Forms.GroupBox();
-            this.tbXpToComment = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.tbXpToCommentsUrl = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.btnGo = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbCrawler = new System.Windows.Forms.ComboBox();
-            this.pnlNewCrawler = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tbName = new System.Windows.Forms.TextBox();
+            this.pnlNewCrawler.SuspendLayout();
+            this.gbComments.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.gbComments.SuspendLayout();
-            this.pnlNewCrawler.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tbBaseURL
+            // pnlNewCrawler
             // 
-            this.tbBaseURL.Location = new System.Drawing.Point(58, 30);
-            this.tbBaseURL.Name = "tbBaseURL";
-            this.tbBaseURL.Size = new System.Drawing.Size(942, 20);
-            this.tbBaseURL.TabIndex = 0;
-            this.tbBaseURL.Text = "www.motorkari.cz/clanky/";
+            this.pnlNewCrawler.Controls.Add(this.label8);
+            this.pnlNewCrawler.Controls.Add(this.tbName);
+            this.pnlNewCrawler.Controls.Add(this.label1);
+            this.pnlNewCrawler.Controls.Add(this.tbBaseURL);
+            this.pnlNewCrawler.Controls.Add(this.label3);
+            this.pnlNewCrawler.Controls.Add(this.label9);
+            this.pnlNewCrawler.Controls.Add(this.gbComments);
+            this.pnlNewCrawler.Controls.Add(this.cbType);
+            this.pnlNewCrawler.Controls.Add(this.cbComments);
+            this.pnlNewCrawler.Controls.Add(this.groupBox1);
+            this.pnlNewCrawler.Controls.Add(this.groupBox2);
+            this.pnlNewCrawler.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlNewCrawler.Location = new System.Drawing.Point(0, 0);
+            this.pnlNewCrawler.Name = "pnlNewCrawler";
+            this.pnlNewCrawler.Size = new System.Drawing.Size(1015, 398);
+            this.pnlNewCrawler.TabIndex = 20;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(12, 16);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(136, 18);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "Datasource name:";
+            // 
+            // tbName
+            // 
+            this.tbName.Location = new System.Drawing.Point(154, 17);
+            this.tbName.Name = "tbName";
+            this.tbName.Size = new System.Drawing.Size(846, 20);
+            this.tbName.TabIndex = 16;
+            this.tbName.Text = "motorkari2";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 29);
+            this.label1.Location = new System.Drawing.Point(12, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 18);
             this.label1.TabIndex = 1;
             this.label1.Text = "URL:";
+            // 
+            // tbBaseURL
+            // 
+            this.tbBaseURL.Location = new System.Drawing.Point(58, 44);
+            this.tbBaseURL.Name = "tbBaseURL";
+            this.tbBaseURL.Size = new System.Drawing.Size(942, 20);
+            this.tbBaseURL.TabIndex = 0;
+            this.tbBaseURL.Text = "www.motorkari.cz/clanky/";
             // 
             // label3
             // 
@@ -94,6 +128,94 @@ namespace FullTextSearch.View
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(0, 18);
             this.label3.TabIndex = 3;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(11, 79);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(77, 15);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "Text type:";
+            // 
+            // gbComments
+            // 
+            this.gbComments.Controls.Add(this.tbXpToComment);
+            this.gbComments.Controls.Add(this.label13);
+            this.gbComments.Controls.Add(this.tbXpToCommentsUrl);
+            this.gbComments.Controls.Add(this.label16);
+            this.gbComments.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbComments.Location = new System.Drawing.Point(581, 105);
+            this.gbComments.Name = "gbComments";
+            this.gbComments.Size = new System.Drawing.Size(419, 150);
+            this.gbComments.TabIndex = 15;
+            this.gbComments.TabStop = false;
+            this.gbComments.Text = "Comments";
+            this.gbComments.Visible = false;
+            // 
+            // tbXpToComment
+            // 
+            this.tbXpToComment.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbXpToComment.Location = new System.Drawing.Point(22, 104);
+            this.tbXpToComment.Name = "tbXpToComment";
+            this.tbXpToComment.Size = new System.Drawing.Size(378, 20);
+            this.tbXpToComment.TabIndex = 13;
+            this.tbXpToComment.Text = "//div[@class=\'comments-list\']/div[@class=\'comment\']//div[@class=\'content-inner\']";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(19, 86);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(133, 15);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "XPath to comments:";
+            // 
+            // tbXpToCommentsUrl
+            // 
+            this.tbXpToCommentsUrl.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbXpToCommentsUrl.Location = new System.Drawing.Point(21, 52);
+            this.tbXpToCommentsUrl.Name = "tbXpToCommentsUrl";
+            this.tbXpToCommentsUrl.Size = new System.Drawing.Size(379, 20);
+            this.tbXpToCommentsUrl.TabIndex = 5;
+            this.tbXpToCommentsUrl.Text = "//div[@class=\'article-actions\']//a/@href";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(19, 34);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(98, 15);
+            this.label16.TabIndex = 8;
+            this.label16.Text = "XPath to url:";
+            // 
+            // cbType
+            // 
+            this.cbType.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Items.AddRange(new object[] {
+            "HTML ",
+            "Tidy text",
+            "Text"});
+            this.cbType.Location = new System.Drawing.Point(94, 78);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(121, 21);
+            this.cbType.TabIndex = 10;
+            // 
+            // cbComments
+            // 
+            this.cbComments.AutoSize = true;
+            this.cbComments.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
+            this.cbComments.Location = new System.Drawing.Point(240, 80);
+            this.cbComments.Name = "cbComments";
+            this.cbComments.Size = new System.Drawing.Size(82, 19);
+            this.cbComments.TabIndex = 15;
+            this.cbComments.Text = "Comments";
+            this.cbComments.UseVisualStyleBackColor = true;
+            this.cbComments.CheckedChanged += new System.EventHandler(this.cbComments_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -218,7 +340,7 @@ namespace FullTextSearch.View
             this.groupBox2.Controls.Add(this.tbXpToTitle);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(10, 293);
+            this.groupBox2.Location = new System.Drawing.Point(10, 277);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(555, 94);
             this.groupBox2.TabIndex = 13;
@@ -263,224 +385,57 @@ namespace FullTextSearch.View
             this.label10.TabIndex = 8;
             this.label10.Text = "XPath to title:";
             // 
-            // cbType
-            // 
-            this.cbType.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbType.FormattingEnabled = true;
-            this.cbType.Items.AddRange(new object[] {
-            "HTML ",
-            "Tidy text",
-            "Text"});
-            this.cbType.Location = new System.Drawing.Point(94, 64);
-            this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(121, 21);
-            this.cbType.TabIndex = 10;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(11, 65);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(77, 15);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "Text type:";
-            // 
-            // cbComments
-            // 
-            this.cbComments.AutoSize = true;
-            this.cbComments.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold);
-            this.cbComments.Location = new System.Drawing.Point(240, 66);
-            this.cbComments.Name = "cbComments";
-            this.cbComments.Size = new System.Drawing.Size(82, 19);
-            this.cbComments.TabIndex = 15;
-            this.cbComments.Text = "Comments";
-            this.cbComments.UseVisualStyleBackColor = true;
-            this.cbComments.CheckedChanged += new System.EventHandler(this.cbComments_CheckedChanged);
-            // 
-            // gbComments
-            // 
-            this.gbComments.Controls.Add(this.tbXpToComment);
-            this.gbComments.Controls.Add(this.label13);
-            this.gbComments.Controls.Add(this.tbXpToCommentsUrl);
-            this.gbComments.Controls.Add(this.label16);
-            this.gbComments.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbComments.Location = new System.Drawing.Point(581, 105);
-            this.gbComments.Name = "gbComments";
-            this.gbComments.Size = new System.Drawing.Size(419, 150);
-            this.gbComments.TabIndex = 15;
-            this.gbComments.TabStop = false;
-            this.gbComments.Text = "Comments";
-            this.gbComments.Visible = false;
-            // 
-            // tbXpToComment
-            // 
-            this.tbXpToComment.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbXpToComment.Location = new System.Drawing.Point(22, 104);
-            this.tbXpToComment.Name = "tbXpToComment";
-            this.tbXpToComment.Size = new System.Drawing.Size(378, 20);
-            this.tbXpToComment.TabIndex = 13;
-            this.tbXpToComment.Text = "//div[@class=\'comments-list\']/div[@class=\'comment\']//div[@class=\'content-inner\']";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(19, 86);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(133, 15);
-            this.label13.TabIndex = 14;
-            this.label13.Text = "XPath to comments:";
-            // 
-            // tbXpToCommentsUrl
-            // 
-            this.tbXpToCommentsUrl.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbXpToCommentsUrl.Location = new System.Drawing.Point(21, 52);
-            this.tbXpToCommentsUrl.Name = "tbXpToCommentsUrl";
-            this.tbXpToCommentsUrl.Size = new System.Drawing.Size(379, 20);
-            this.tbXpToCommentsUrl.TabIndex = 5;
-            this.tbXpToCommentsUrl.Text = "//div[@class=\'article-actions\']//a/@href";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(19, 34);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(98, 15);
-            this.label16.TabIndex = 8;
-            this.label16.Text = "XPath to url:";
-            // 
-            // btnGo
-            // 
-            this.btnGo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
-            this.btnGo.FlatAppearance.BorderSize = 0;
-            this.btnGo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnGo.Location = new System.Drawing.Point(293, 23);
-            this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(237, 23);
-            this.btnGo.TabIndex = 16;
-            this.btnGo.Text = "Go";
-            this.btnGo.UseVisualStyleBackColor = false;
-            this.btnGo.Click += new System.EventHandler(this.BtnGo_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(19, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(128, 18);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "Select crawler:";
-            // 
-            // cbCrawler
-            // 
-            this.cbCrawler.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbCrawler.FormattingEnabled = true;
-            this.cbCrawler.Location = new System.Drawing.Point(153, 25);
-            this.cbCrawler.Name = "cbCrawler";
-            this.cbCrawler.Size = new System.Drawing.Size(121, 21);
-            this.cbCrawler.TabIndex = 18;
-            this.cbCrawler.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // pnlNewCrawler
-            // 
-            this.pnlNewCrawler.Controls.Add(this.label8);
-            this.pnlNewCrawler.Controls.Add(this.tbName);
-            this.pnlNewCrawler.Controls.Add(this.label1);
-            this.pnlNewCrawler.Controls.Add(this.tbBaseURL);
-            this.pnlNewCrawler.Controls.Add(this.label3);
-            this.pnlNewCrawler.Controls.Add(this.label9);
-            this.pnlNewCrawler.Controls.Add(this.gbComments);
-            this.pnlNewCrawler.Controls.Add(this.cbType);
-            this.pnlNewCrawler.Controls.Add(this.cbComments);
-            this.pnlNewCrawler.Controls.Add(this.groupBox1);
-            this.pnlNewCrawler.Controls.Add(this.groupBox2);
-            this.pnlNewCrawler.Location = new System.Drawing.Point(12, 57);
-            this.pnlNewCrawler.Name = "pnlNewCrawler";
-            this.pnlNewCrawler.Size = new System.Drawing.Size(1015, 398);
-            this.pnlNewCrawler.TabIndex = 19;
-            this.pnlNewCrawler.Visible = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(12, 2);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(136, 18);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "Datasource name:";
-            // 
-            // tbName
-            // 
-            this.tbName.Location = new System.Drawing.Point(154, 3);
-            this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(846, 20);
-            this.tbName.TabIndex = 16;
-            this.tbName.Text = "motorkari2";
-            // 
-            // DataSourcePanel
+            // UCCrawlerSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
             this.Controls.Add(this.pnlNewCrawler);
-            this.Controls.Add(this.cbCrawler);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.btnGo);
-            this.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "DataSourcePanel";
-            this.Size = new System.Drawing.Size(1036, 455);
+            this.Name = "UCCrawlerSettings";
+            this.Size = new System.Drawing.Size(1015, 398);
+            this.pnlNewCrawler.ResumeLayout(false);
+            this.pnlNewCrawler.PerformLayout();
+            this.gbComments.ResumeLayout(false);
+            this.gbComments.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.gbComments.ResumeLayout(false);
-            this.gbComments.PerformLayout();
-            this.pnlNewCrawler.ResumeLayout(false);
-            this.pnlNewCrawler.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox tbBaseURL;
+        private System.Windows.Forms.Panel pnlNewCrawler;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbBaseURL;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox gbComments;
+        private System.Windows.Forms.TextBox tbXpToComment;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tbXpToCommentsUrl;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cbType;
+        private System.Windows.Forms.CheckBox cbComments;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tbXpToUrl;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tbXpToElements;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbPageURL;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbTo;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbFrom;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbXpToUrl;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox tbXpToElements;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tbXpToText;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbXpToTitle;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox cbType;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.CheckBox cbComments;
-        private System.Windows.Forms.GroupBox gbComments;
-        private System.Windows.Forms.TextBox tbXpToComment;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox tbXpToCommentsUrl;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button btnGo;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cbCrawler;
-        private System.Windows.Forms.Panel pnlNewCrawler;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tbName;
     }
 }

@@ -49,7 +49,7 @@ namespace CrawlerIR2.Crawler
                         Article article = ProcessOneArticle(item);
                         using (var context = new Context(TableName))
                         {
-                            context.Articles.AddIfNotExists(article, x => x.Url == article.Url);
+                            context.Articles.AddIfNotExists(article, x => x.ArticleId == article.ArticleId);
                             
                             context.SaveChanges();
                         }

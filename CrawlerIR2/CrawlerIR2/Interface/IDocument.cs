@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrawlerIR2.Interface
 {
-    interface IDocument
+    public interface IDocument
     {
 
         /**

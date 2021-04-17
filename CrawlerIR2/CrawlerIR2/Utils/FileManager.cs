@@ -82,7 +82,7 @@ namespace CrawlerIR2.Utils
                 {
                     foreach (Comment item in article.Comments)
                     {
-                        sw.WriteLine(item.Id);
+                        sw.WriteLine(item.CommentId);
                         sw.WriteLine(item.Text);
                     }
                 }
@@ -128,7 +128,7 @@ namespace CrawlerIR2.Utils
             articleNode.AppendChild(CreateNode(doc, "Date", article.Date));
 
             XmlNode textNode = doc.CreateElement("Text");
-            XmlCDataSection CData = doc.CreateCDataSection(CleanInvalidXmlChars(article.TidyText));
+            XmlCDataSection CData = doc.CreateCDataSection(CleanInvalidXmlChars(article.Text));
             articleNode.AppendChild(textNode);
             textNode.AppendChild(CData);
 
@@ -142,8 +142,8 @@ namespace CrawlerIR2.Utils
                     XmlNode commentNode = doc.CreateElement("Comment");
                     commentsNode.AppendChild(commentNode);
 
-                    commentNode.AppendChild(CreateNode(doc, "Id", comment.Id));
-                    commentNode.AppendChild(CreateNode(doc, "Date", comment.Date));
+                    commentNode.AppendChild(CreateNode(doc, "Id", comment.CommentId.ToString()));
+                    commentNode.AppendChild(CreateNode(doc, "Date", comment.DateCreated.ToString()));
                     commentNode.AppendChild(CreateNode(doc, "Author", comment.Author));
 
                     XmlNode textNode2 = doc.CreateElement("Text");
@@ -171,13 +171,13 @@ namespace CrawlerIR2.Utils
             using (StreamWriter sw = File.AppendText(path))
             {
                 sw.WriteLine(article.Url);
-                sw.WriteLine(article.HtmlText);
+                sw.WriteLine(article.Text);
 
                 if (article.Comments != null)
                 {
                     foreach (Comment item in article.Comments)
                     {
-                        sw.WriteLine(item.Id);
+                        sw.WriteLine(item.CommentId);
                         sw.WriteLine(item.HtmlText);
                     }
                 }

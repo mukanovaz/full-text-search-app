@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CrawlerIR2.Crawler
 {
-    interface ICrawler
+    public interface ICrawler
     {
         List<Article> GetArticles();
         List<Comment> GetComments(string url);

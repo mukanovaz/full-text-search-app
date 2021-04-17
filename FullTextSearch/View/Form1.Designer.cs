@@ -36,8 +36,8 @@ namespace FullTextSearch
             this.btnDocuments = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.searchingPanel1 = new FullTextSearch.View.SearchingPanel();
-            this.dataSourcePanel1 = new FullTextSearch.View.DataSourcePanel();
+            this.dataSourcePanel1 = new FullTextSearch.View.UCDataSource();
+            this.panelContainer = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -134,6 +134,7 @@ namespace FullTextSearch
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
             this.btnSearch.Image = global::FullTextSearch.Properties.Resources.magnifying_glass__1_;
             this.btnSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSearch.Location = new System.Drawing.Point(0, 179);
@@ -146,15 +147,6 @@ namespace FullTextSearch
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click_1);
             // 
-            // searchingPanel1
-            // 
-            this.searchingPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
-            this.searchingPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.searchingPanel1.Location = new System.Drawing.Point(192, 0);
-            this.searchingPanel1.Name = "searchingPanel1";
-            this.searchingPanel1.Size = new System.Drawing.Size(1036, 510);
-            this.searchingPanel1.TabIndex = 11;
-            // 
             // dataSourcePanel1
             // 
             this.dataSourcePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
@@ -165,17 +157,25 @@ namespace FullTextSearch
             this.dataSourcePanel1.Size = new System.Drawing.Size(1036, 510);
             this.dataSourcePanel1.TabIndex = 12;
             // 
+            // panelContainer
+            // 
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContainer.Location = new System.Drawing.Point(192, 0);
+            this.panelContainer.Name = "panelContainer";
+            this.panelContainer.Size = new System.Drawing.Size(1036, 510);
+            this.panelContainer.TabIndex = 11;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
             this.ClientSize = new System.Drawing.Size(1228, 510);
-            this.Controls.Add(this.dataSourcePanel1);
-            this.Controls.Add(this.searchingPanel1);
+            this.Controls.Add(this.panelContainer);
             this.Controls.Add(this.panel2);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -185,13 +185,13 @@ namespace FullTextSearch
         #endregion
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel pnlNav;
-        private View.SearchingPanel searchingPanel1;
         private System.Windows.Forms.Button btnDocuments;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnDataSource;
-        private View.DataSourcePanel dataSourcePanel1;
+        private View.UCDataSource dataSourcePanel1;
+        private System.Windows.Forms.Panel panelContainer;
     }
 }
 

@@ -34,7 +34,7 @@ namespace FullTextSearch.Model
             Analyzer.LoadStopWords(File.Open(Path.Combine(Environment.CurrentDirectory, @"Data\stopwords.txt"), FileMode.Open), Encoding.UTF8);
         }
 
-        public List<string> GetTokens(string text, Article article, ref Dictionary<string, List<Article>> invertedIndex)
+        public List<string> GetTokens(string text, Article article, ref Dictionary<string, List<int>> invertedIndex)
         {
             List<string> tokens = new List<string>();
             TokenStream ts = Analyzer.TokenStream("text", new System.IO.StringReader(text));
@@ -44,16 +44,16 @@ namespace FullTextSearch.Model
                 // Check if work exist
                 if (!invertedIndex.ContainsKey(token))
                 {
-                    List<Article> tmp = new List<Article>();
-                    tmp.Add(article);
+                    List<int> tmp = new List<int>();
+                    tmp.Add(article.ArticleId);
                     invertedIndex.Add(token, tmp);
                     continue;
                 }
 
-                // Check if document exist
-                if (!invertedIndex[token].Contains(article))
+                // Check if document exist and add
+                if (!invertedIndex[token].Contains(article.ArticleId))
                 {
-                    invertedIndex[token].Add(article);
+                    invertedIndex[token].Add(article.ArticleId);
                     continue;
                 }
             }

@@ -36,8 +36,8 @@ namespace FullTextSearch
             this.btnDocuments = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.dataSourcePanel1 = new FullTextSearch.View.UCDataSource();
             this.panelContainer = new System.Windows.Forms.Panel();
+            this.dataSourcePanel1 = new FullTextSearch.View.UCDataSource();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -147,6 +147,14 @@ namespace FullTextSearch
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click_1);
             // 
+            // panelContainer
+            // 
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContainer.Location = new System.Drawing.Point(192, 0);
+            this.panelContainer.Name = "panelContainer";
+            this.panelContainer.Size = new System.Drawing.Size(1036, 510);
+            this.panelContainer.TabIndex = 11;
+            // 
             // dataSourcePanel1
             // 
             this.dataSourcePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
@@ -156,14 +164,6 @@ namespace FullTextSearch
             this.dataSourcePanel1.Name = "dataSourcePanel1";
             this.dataSourcePanel1.Size = new System.Drawing.Size(1036, 510);
             this.dataSourcePanel1.TabIndex = 12;
-            // 
-            // panelContainer
-            // 
-            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContainer.Location = new System.Drawing.Point(192, 0);
-            this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(1036, 510);
-            this.panelContainer.TabIndex = 11;
             // 
             // Form1
             // 

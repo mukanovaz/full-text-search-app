@@ -87,6 +87,11 @@ namespace FullTextSearch.Utils
             return articles;
         }
 
+        internal string AddHighlightToText(string text, int start, int end)
+        {
+            return text.Insert(end, "</span>").Insert(start, "<span id=\"search\" style=\"background-color: #FFFF00\">");
+        }
+
         public Article GetArticle(string url, string title, string info, string text)
         {
             return new Article() { Title = title, Url = url, Date = info, Text = text, Comments = null };

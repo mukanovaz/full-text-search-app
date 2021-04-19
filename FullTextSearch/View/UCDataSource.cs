@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,11 +15,18 @@ namespace FullTextSearch.View
 {
     public partial class UCDataSource : UserControl
     {
+        private string _dbName;
         static UCCrawlerSettings _ucCrawlerSettings;
         static UCDocumentsView _ucDocumentsView;
 
         private string SettingFile = @"D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch\crawlers.txt";
         public List<Article> Articles;
+
+        public UCDataSource()
+        {
+            InitializeComponent();
+            FillDataSource();
+        }
 
         public UCCrawlerSettings CrawlerSettingsUC
         {
@@ -51,10 +60,16 @@ namespace FullTextSearch.View
             set { panelContainer = value; }
         }
 
-        public UCDataSource()
+        public BackgroundWorker BWIndexDocuments
         {
-            InitializeComponent();
-            FillDataSource();
+            get { return bwIndexDocuments; }
+            set { bwIndexDocuments = value; }
+        }
+
+        public ProgressBar ProgressBar
+        {
+            get { return progressBar1; }
+            set { progressBar1 = value; }
         }
 
         private void UCDataSource_Load(object sender, EventArgs e)
@@ -106,8 +121,9 @@ namespace FullTextSearch.View
                 }
             } else
             {
-                Articles = Controller.Instance.GetDataFromFilesAndIndex(Controller.Instance.GetValidDBName(cbCrawler.Text));
-                DocumentsViewUC.FillTable(Articles);
+                _dbName = Controller.Instance.GetValidDBName(cbCrawler.Text);
+                pnlLoading.Visible = true;
+                bwIndexDocuments.RunWorkerAsync();
             }
         }
 
@@ -134,6 +150,29 @@ namespace FullTextSearch.View
             else 
             {
                 ShowUserControl(DocumentsViewUC);
+            }
+        }
+
+        private void bwIndexDocuments_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var backgroundWorker = sender as BackgroundWorker;
+            Articles = Controller.Instance.GetDataFromFilesAndIndex(_dbName, ref backgroundWorker);
+        }
+
+        private void bwIndexDocuments_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            pnlLoading.Visible = false;
+            DocumentsViewUC.FillTable(Articles);
+        }
+
+        private void bwIndexDocuments_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == 1)
+            {
+                lbProgress.Text = "Reading data..";
+            } else
+            {
+                lbProgress.Text = "Indexing data..";
             }
         }
     }

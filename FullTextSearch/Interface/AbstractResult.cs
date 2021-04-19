@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace FullTextSearch.Interface
 {
-    abstract class AbstractResult : IResult
+    public abstract class AbstractResult : IResult
     {
         /**
          * Id dokumentu
          */
-        string DocumentID { get; set; }
+        public string DocumentID { get; set; }
 
         /**
          * Rank (pořadí) mezi ostatními vrácenými dokumenty
          */
-        int Rank { get; set; } = -1;
+        public int Rank { get; set; } = -1;
 
         /**
          * Skóre podobnosti mezi tímto výsledkem (dokumentem) a dotazem
          */
-        float Score { get; set; } = -1;
+        public float Score { get; set; } = -1;
 
         public string GetDocumentID()
         {

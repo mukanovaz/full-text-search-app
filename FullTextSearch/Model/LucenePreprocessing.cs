@@ -1,4 +1,5 @@
 ﻿using CrawlerIR2.Models;
+using FullTextSearch.Interface;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Cz;
 using Lucene.Net.Analysis.Tokenattributes;
@@ -11,22 +12,9 @@ using System.Text;
 
 namespace FullTextSearch.Model
 {
-    class LucenePreprocessing
+    public class LucenePreprocessing
     {
-        private static LucenePreprocessing instance = null;
         private CzechAnalyzer Analyzer;
-
-        public static LucenePreprocessing Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new LucenePreprocessing();
-                }
-                return instance;
-            }
-        }
 
         public LucenePreprocessing()
         {
@@ -34,30 +22,18 @@ namespace FullTextSearch.Model
             Analyzer.LoadStopWords(File.Open(Path.Combine(Environment.CurrentDirectory, @"Data\stopwords.txt"), FileMode.Open), Encoding.UTF8);
         }
 
-        public List<string> GetTokens(string text, Article article, ref Dictionary<string, List<int>> invertedIndex)
+        public void ParseTokens(string text, Article article, Index index)
         {
-            List<string> tokens = new List<string>();
             TokenStream ts = Analyzer.TokenStream("text", new System.IO.StringReader(text));
+            var offsetAtt = (OffsetAttribute)ts.AddAttribute<IOffsetAttribute>();
+
             while (ts.IncrementToken())
             {
                 string token = ts.GetAttribute<ITermAttribute>().Term;
-                // Check if work exist
-                if (!invertedIndex.ContainsKey(token))
-                {
-                    List<int> tmp = new List<int>();
-                    tmp.Add(article.ArticleId);
-                    invertedIndex.Add(token, tmp);
-                    continue;
-                }
-
-                // Check if document exist and add
-                if (!invertedIndex[token].Contains(article.ArticleId))
-                {
-                    invertedIndex[token].Add(article.ArticleId);
-                    continue;
-                }
+                int start = offsetAtt.StartOffset;
+                int end = offsetAtt.EndOffset;
+                index.Append(token, article.GetId(), start, end);
             }
-            return tokens;
         }
 
         public void ParseQuery(string searchTerm, string searchField)

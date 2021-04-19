@@ -34,7 +34,13 @@ namespace FullTextSearch.View
             this.cbCrawler = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelContainer = new System.Windows.Forms.Panel();
+            this.pnlLoading = new System.Windows.Forms.Panel();
+            this.lbProgress = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.bwIndexDocuments = new System.ComponentModel.BackgroundWorker();
             this.panel1.SuspendLayout();
+            this.panelContainer.SuspendLayout();
+            this.pnlLoading.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnGo
@@ -56,6 +62,7 @@ namespace FullTextSearch.View
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label6.Location = new System.Drawing.Point(11, 18);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(128, 18);
@@ -86,11 +93,49 @@ namespace FullTextSearch.View
             // 
             // panelContainer
             // 
+            this.panelContainer.Controls.Add(this.pnlLoading);
             this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContainer.Location = new System.Drawing.Point(0, 51);
             this.panelContainer.Name = "panelContainer";
             this.panelContainer.Size = new System.Drawing.Size(1036, 404);
             this.panelContainer.TabIndex = 21;
+            // 
+            // pnlLoading
+            // 
+            this.pnlLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
+            this.pnlLoading.Controls.Add(this.lbProgress);
+            this.pnlLoading.Controls.Add(this.progressBar1);
+            this.pnlLoading.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlLoading.Location = new System.Drawing.Point(0, 371);
+            this.pnlLoading.Name = "pnlLoading";
+            this.pnlLoading.Size = new System.Drawing.Size(1036, 33);
+            this.pnlLoading.TabIndex = 1;
+            this.pnlLoading.Visible = false;
+            // 
+            // lbProgress
+            // 
+            this.lbProgress.AutoSize = true;
+            this.lbProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lbProgress.Location = new System.Drawing.Point(121, 9);
+            this.lbProgress.Name = "lbProgress";
+            this.lbProgress.Size = new System.Drawing.Size(91, 13);
+            this.lbProgress.TabIndex = 1;
+            this.lbProgress.Text = "Reading data..";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(14, 5);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar1.TabIndex = 0;
+            // 
+            // bwIndexDocuments
+            // 
+            this.bwIndexDocuments.WorkerReportsProgress = true;
+            this.bwIndexDocuments.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwIndexDocuments_DoWork);
+            this.bwIndexDocuments.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwIndexDocuments_ProgressChanged);
+            this.bwIndexDocuments.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwIndexDocuments_RunWorkerCompleted);
             // 
             // UCDataSource
             // 
@@ -105,6 +150,9 @@ namespace FullTextSearch.View
             this.Load += new System.EventHandler(this.UCDataSource_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panelContainer.ResumeLayout(false);
+            this.pnlLoading.ResumeLayout(false);
+            this.pnlLoading.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -115,5 +163,9 @@ namespace FullTextSearch.View
         private System.Windows.Forms.ComboBox cbCrawler;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panelContainer;
+        private System.Windows.Forms.Panel pnlLoading;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.ComponentModel.BackgroundWorker bwIndexDocuments;
+        private System.Windows.Forms.Label lbProgress;
     }
 }

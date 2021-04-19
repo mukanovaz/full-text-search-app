@@ -17,6 +17,8 @@ namespace FullTextSearch.Utils
         private static Controller _instance = null;
         public Index Index { get; set; }
 
+        public string TableName { get; set; }
+
         private Controller() {}
 
         public static Controller Instance
@@ -36,22 +38,26 @@ namespace FullTextSearch.Utils
             return crawler.GetArticles();
         }
 
-        public List<Article> GetDataFromFilesAndIndex(string db_name)
+        public List<Article> GetDataFromFilesAndIndex(string db_name, ref System.ComponentModel.BackgroundWorker backgroundWorker)
         {
+            backgroundWorker.ReportProgress(1);
+
+            TableName = db_name;
             List<Article> list = new List<Article>();
-            Context context = new Context(db_name);
+            Context context = new Context(TableName);
             if (context.Articles == null || context.Articles.Count() == 0)
             {
-                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html.xml"), ref list, db_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html64.xml"), ref list, table_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html128.xml"), ref list, table_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html192.xml"), ref list, table_name);
+                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html.xml"), ref list, TableName);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html64.xml"), ref list, TableName);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html128.xml"), ref list, TableName);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, @"Data\", @"CrawlerIR_Html192.xml"), ref list, TableName);
             }
             else
             {
                 list = context.Articles.ToList();
             }
 
+            backgroundWorker.ReportProgress(2);
             Index = new Index();
             (Index as IIndexer).Index(list);
 

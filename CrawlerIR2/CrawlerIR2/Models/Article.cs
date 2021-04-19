@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
 
 namespace CrawlerIR2.Models
 {
@@ -14,6 +13,7 @@ namespace CrawlerIR2.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ArticleId { get; set; }
+        public virtual List<Comment> Comments { get; set; }
         public string Title { get; set; }
         public string Date { get; set; }
         public DateTime DateCreated
@@ -35,7 +35,7 @@ namespace CrawlerIR2.Models
         public string Views { get; set; }
         public string Text { get; set; }
         public string Url { get; set; }
-        public virtual List<Comment> Comments { get; set; }
+
 
         public DateTime GetDate()
         {

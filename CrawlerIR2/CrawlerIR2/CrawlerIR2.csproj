@@ -81,7 +81,6 @@
     <Compile Include="Crawler\CrawlerMotorkari.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
     <Compile Include="Interface\IDocument.cs" />
-    <Compile Include="Interface\IResult.cs" />
     <Compile Include="Models\ArticleLight.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Comment.cs" />

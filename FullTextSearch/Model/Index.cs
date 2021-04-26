@@ -1,7 +1,6 @@
 ﻿using CrawlerIR2.Interface;
 using CrawlerIR2.Models;
 using FullTextSearch.Interface;
-using FullTextSearch.View;
 using System.Collections.Generic;
 using System.Linq;
 

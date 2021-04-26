@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{03353A54-841A-4B26-AC5E-D0238A97D10D}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>FullTextSearch</RootNamespace>
     <AssemblyName>FullTextSearch</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -35,6 +35,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -104,57 +107,8 @@
     <Compile Include="Model\LucenePreprocessing.cs" />
     <Compile Include="Model\Result.cs" />
     <Compile Include="Utils\Controller.cs" />
-    <Compile Include="View\UCCrawlerSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\UCCrawlerSettings.Designer.cs">
-      <DependentUpon>UCCrawlerSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\UCDataSource.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\UCDataSource.Designer.cs">
-      <DependentUpon>UCDataSource.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\UCDocumentsView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\UCDocumentsView.Designer.cs">
-      <DependentUpon>UCDocumentsView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DataReader.cs" />
-    <Compile Include="View\UCSearching.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\UCSearching.Designer.cs">
-      <DependentUpon>UCSearching.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\TextViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\TextViewer.Designer.cs">
-      <DependentUpon>TextViewer.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="View\UCCrawlerSettings.resx">
-      <DependentUpon>UCCrawlerSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\UCDataSource.resx">
-      <DependentUpon>UCDataSource.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\UCDocumentsView.resx">
-      <DependentUpon>UCDocumentsView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -165,13 +119,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="View\UCSearching.resx">
-      <DependentUpon>UCSearching.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\TextViewer.resx">
-      <DependentUpon>TextViewer.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

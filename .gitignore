@@ -26,6 +26,11 @@ dist/
 # JetBrains IDE
 .idea/
 
+# bin
+*/bin/Debug/
+*/obj/Debug/
+packages/
+
 # Unit test reports
 TEST*.xml
 
@@ -48,4 +53,5 @@ Thumbs.db
 *.mov
 *.wmv
 *.xml
+*.pdf
 

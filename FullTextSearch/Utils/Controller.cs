@@ -1,4 +1,5 @@
 ﻿using CrawlerIR2.Crawler;
+using CrawlerIR2.Interface;
 using CrawlerIR2.Models;
 using FullTextSearch.Interface;
 using FullTextSearch.Model;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FullTextSearch.Utils
 {
-    class Controller
+    public class Controller
     {
         private static Controller _instance = null;
         public Index Index { get; set; }
@@ -62,6 +63,33 @@ namespace FullTextSearch.Utils
             (Index as IIndexer).Index(list);
 
             return list;
+        }
+
+        public List<Article> BooleanModelSearch(string query, decimal top)
+        {
+            List<Article> articles = new List<Article>();
+            List<IResult> results = Controller.Instance.Index.Search(query);
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                if (articles.Count == top) break;
+                Result res = (Result)results[i];
+                string id = res.GetDocumentID();
+                using (var context = new Context(Controller.Instance.TableName))
+                {
+                    Article article = context.Articles
+                                       .Where(s => s.ArticleId.ToString() == id)
+                                       .FirstOrDefault<Article>();
+
+                    Article obj = articles.FirstOrDefault(x => x.ArticleId == article.ArticleId);
+                    if (obj == null)
+                    {
+                        article.Text = DataReader.Instance.AddHighlightToText(article.Text, res.StartPosition, res.EndPositionPosition);
+                        articles.Add(article);
+                    }
+                }
+            }
+            return articles;
         }
 
         public string GetValidDBName (string name)

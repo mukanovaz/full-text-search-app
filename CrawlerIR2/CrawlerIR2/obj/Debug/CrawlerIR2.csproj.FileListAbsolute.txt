@@ -24,9 +24,6 @@ D:\Study\ZCU\2.semestr\IR\Crawler\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csp
 D:\Study\ZCU\2.semestr\IR\Crawler\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csproj.CopyComplete
 D:\Study\ZCU\2.semestr\IR\Crawler\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.exe
 D:\Study\ZCU\2.semestr\IR\Crawler\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.pdb
-D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.Properties.Resources.resources
-D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csproj.GenerateResource.cache
-D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csproj.CoreCompileInputs.cache
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Debug\CrawlerIR2.exe.config
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Debug\CrawlerIR2.exe
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Debug\CrawlerIR2.pdb
@@ -37,6 +34,9 @@ D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Deb
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Debug\EntityFramework.SqlServer.xml
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Debug\HtmlAgilityPack.pdb
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\bin\Debug\HtmlAgilityPack.xml
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.Properties.Resources.resources
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csproj.GenerateResource.cache
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csproj.CoreCompileInputs.cache
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.csproj.CopyComplete
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.exe
 D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\CrawlerIR2\CrawlerIR2\obj\Debug\CrawlerIR2.pdb

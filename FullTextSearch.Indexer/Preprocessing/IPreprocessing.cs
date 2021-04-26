@@ -1,5 +1,4 @@
 ﻿using CrawlerIR2.Models;
-using FullTextSearch.Model;
 using System.Collections.Generic;
 
 namespace FullTextSearch.Indexer

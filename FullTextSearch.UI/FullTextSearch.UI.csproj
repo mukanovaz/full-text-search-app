@@ -138,9 +138,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CrawlerIR2\CrawlerIR2\CrawlerIR2.csproj">
+    <ProjectReference Include="..\CrawlerIR2\CrawlerIR2\FullTextSearch.Crawler.csproj">
       <Project>{1bc2b356-cfc4-4d86-aad8-82441403c251}</Project>
-      <Name>CrawlerIR2</Name>
+      <Name>FullTextSearch.Crawler</Name>
     </ProjectReference>
     <ProjectReference Include="..\FullTextSearch.Core\FullTextSearch.Core.csproj">
       <Project>{ef179a03-f6f1-415d-b381-e2420fd240e1}</Project>

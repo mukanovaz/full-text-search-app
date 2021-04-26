@@ -77,8 +77,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IIndexer.cs" />
-    <Compile Include="Index.cs" />
+    <Compile Include="Indexer\IIndexer.cs" />
+    <Compile Include="Indexer\Index.cs" />
     <Compile Include="Preprocessing\IPreprocessing.cs" />
     <Compile Include="Preprocessing\LucenePreprocessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,9 +88,9 @@
     <Compile Include="Searcher\ISearcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CrawlerIR2\CrawlerIR2\CrawlerIR2.csproj">
+    <ProjectReference Include="..\CrawlerIR2\CrawlerIR2\FullTextSearch.Crawler.csproj">
       <Project>{1bc2b356-cfc4-4d86-aad8-82441403c251}</Project>
-      <Name>CrawlerIR2</Name>
+      <Name>FullTextSearch.Crawler</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

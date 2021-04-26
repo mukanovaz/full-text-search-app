@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerIR2", "CrawlerIR2\CrawlerIR2\CrawlerIR2.csproj", "{1BC2B356-CFC4-4D86-AAD8-82441403C251}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch.Crawler", "CrawlerIR2\CrawlerIR2\FullTextSearch.Crawler.csproj", "{1BC2B356-CFC4-4D86-AAD8-82441403C251}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch.UI", "FullTextSearch.UI\FullTextSearch.UI.csproj", "{A74BBE2E-FF13-418F-8553-C1CD1305B240}"
 EndProject

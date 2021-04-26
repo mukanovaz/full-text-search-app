@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using CrawlerIR2.Crawler;
 using CrawlerIR2.Models;
+using FullTextSearch.Core;
 using FullTextSearch.Utils;
 
 namespace FullTextSearch.UI
@@ -15,7 +16,6 @@ namespace FullTextSearch.UI
         static UCCrawlerSettings _ucCrawlerSettings;
         static UCDocumentsView _ucDocumentsView;
 
-        private string SettingFile = @"D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch\crawlers.txt";
         public List<Article> Articles;
 
         public UCDataSource()
@@ -74,10 +74,9 @@ namespace FullTextSearch.UI
             PanelContainer.Controls.Add(CrawlerSettingsUC);
         }
 
-        // TODO: move to model
         private void FillDataSource()
         {
-            string[] lines = File.ReadAllLines(SettingFile);
+            string[] lines = DataReader.Instance.GetDataSources();
             foreach (string line in lines)
             {
                 cbCrawler.Items.Add(line);
@@ -85,16 +84,11 @@ namespace FullTextSearch.UI
             cbCrawler.Items.Add("New");
         }
 
-        private void AddToFile(string table_name)
-        {
-            File.AppendAllLines(SettingFile, new string[] { table_name });
-        }
-
         private void BtnGo_Click(object sender, EventArgs e)
         {
             if (cbCrawler.Text == "New")
             {
-                Articles = Controller.Instance.RunCrawler(new BasicCrawler()
+                Articles = MainController.Instance.RunCrawler(false, crawler: new BasicCrawler()
                 {
                     Base_url = CrawlerSettingsUC.BaseUrl,
                     Page_url = CrawlerSettingsUC.PageURL,
@@ -108,16 +102,16 @@ namespace FullTextSearch.UI
                     XPathToCommentsUrl = CrawlerSettingsUC.XpToCommentsUrl,
                     XPathToComment = CrawlerSettingsUC.XpToComment,
                     Type = CrawlerSettingsUC.Type,
-                    TableName = Controller.Instance.GetValidDBName(CrawlerSettingsUC.CrawlerName)
+                    TableName = DataReader.Instance.GetValidDBName(CrawlerSettingsUC.CrawlerName)
                 });
 
                 if (Articles != null)
                 {
-                    AddToFile(CrawlerSettingsUC.CrawlerName);
+                    DataReader.Instance.AddDataSourceToFile(CrawlerSettingsUC.CrawlerName);
                 }
             } else
             {
-                _dbName = Controller.Instance.GetValidDBName(cbCrawler.Text);
+                _dbName = DataReader.Instance.GetValidDBName(cbCrawler.Text);
                 pnlLoading.Visible = true;
                 bwIndexDocuments.RunWorkerAsync();
             }
@@ -152,7 +146,7 @@ namespace FullTextSearch.UI
         private void bwIndexDocuments_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             var backgroundWorker = sender as BackgroundWorker;
-            Articles = Controller.Instance.GetDataFromFilesAndIndex(_dbName, ref backgroundWorker);
+            Articles = MainController.Instance.RunCrawler(true, db_name: _dbName, backgroundWorker: backgroundWorker);
         }
 
         private void bwIndexDocuments_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)

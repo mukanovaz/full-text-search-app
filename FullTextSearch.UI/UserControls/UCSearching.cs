@@ -47,7 +47,7 @@ namespace FullTextSearch.UI
             
             if (_isBooleanModel)
             {
-                articles = Controller.Instance.BooleanModelSearch(tbSearchText.Text, nudResults.Value);
+                // articles = Controller.Instance.BooleanModelSearch(tbSearchText.Text, nudResults.Value);
             } else
             {
                 articles = null;

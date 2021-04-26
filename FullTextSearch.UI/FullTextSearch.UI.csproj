@@ -142,9 +142,9 @@
       <Project>{1bc2b356-cfc4-4d86-aad8-82441403c251}</Project>
       <Name>CrawlerIR2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FullTextSearch\FullTextSearch.csproj">
-      <Project>{03353a54-841a-4b26-ac5e-d0238a97d10d}</Project>
-      <Name>FullTextSearch</Name>
+    <ProjectReference Include="..\FullTextSearch.Core\FullTextSearch.Core.csproj">
+      <Project>{ef179a03-f6f1-415d-b381-e2420fd240e1}</Project>
+      <Name>FullTextSearch.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

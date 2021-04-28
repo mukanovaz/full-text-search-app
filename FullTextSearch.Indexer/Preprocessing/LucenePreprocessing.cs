@@ -35,11 +35,5 @@ namespace FullTextSearch.Indexer
             }
         }
 
-        public void ParseQuery(string searchTerm, string searchField)
-        {
-            QueryParser parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, searchField, Analyzer);
-            Query query = parser.Parse(searchTerm);
-        }
-
     }
 }

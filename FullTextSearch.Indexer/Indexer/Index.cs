@@ -1,12 +1,15 @@
 ﻿using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
+using FullTextSearch.Indexer.Indexer.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace FullTextSearch.Indexer
 {
     public class Index : IIndexer, ISearcher
     {
+        private LucenePreprocessing Preprocessing;
         private readonly SortedSet<int> _indexedDocuments = new SortedSet<int>();
         public IEnumerable<int> IndexedDocuments => _indexedDocuments;
 
@@ -42,7 +45,7 @@ namespace FullTextSearch.Indexer
             _indexedDocuments.Add(doc_id);
         }
 
-        private IEnumerable<IResult> GetPostingsFor(string term)
+        public IEnumerable<IResult> GetPostingsFor(string term)
         {
             return !_index.ContainsKey(term)
               ? Enumerable.Empty<IResult>()
@@ -51,16 +54,22 @@ namespace FullTextSearch.Indexer
 
         public List<IResult> Search(string query)
         {
-            return GetPostingsFor(query).ToList();
+            if (Preprocessing == null) return null;
+
+            BooleanRetrievalModel retrievalModel = new BooleanRetrievalModel(this);
+            var t =  retrievalModel.ParseQuery(query);
+            return null;
+            // return GetPostingsFor(query).ToList();
         }
+
 
         void IIndexer.Index(List<Article> documents)
         {
-            LucenePreprocessing preprocessing = new LucenePreprocessing();
+            Preprocessing = new LucenePreprocessing();
 
             for (int i = 0; i < documents.Count; i++)
             {
-                preprocessing.ParseTokens(documents[i].GetText(), documents[i], this);
+                Preprocessing.ParseTokens(documents[i].GetText(), documents[i], this);
             }
         }
 

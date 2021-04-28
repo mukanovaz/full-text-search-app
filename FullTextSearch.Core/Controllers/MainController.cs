@@ -11,7 +11,6 @@ namespace FullTextSearch.Core
         private static MainController _instance = null;
 
         public List<Article> Articles { get; private set; }
-        private Index Index;
         private static IndexerController IndexerController;
         private static CrawlerController CrawlerController;
 
@@ -31,9 +30,13 @@ namespace FullTextSearch.Core
             }
         }
 
-        public void RunSearcher(bool is_vector, string query)
+        public void RunSearcher(bool is_boolean, string query)
         {
-
+            // Boolean model
+            if (is_boolean)
+            {
+                IndexerController.Search(query);
+            }
         }
 
         public List<Article> RunCrawler(bool is_exist, ICrawler crawler = null, string db_name = "", BackgroundWorker backgroundWorker = null)
@@ -62,7 +65,7 @@ namespace FullTextSearch.Core
 
         public List<Article> RunIndexer(List<Article> articles)
         {
-            Index = IndexerController.IndexArticles(articles);
+            IndexerController.IndexArticles(articles);
 
             return articles;
         }

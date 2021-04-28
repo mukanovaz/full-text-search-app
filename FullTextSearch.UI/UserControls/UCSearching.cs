@@ -1,4 +1,5 @@
 ﻿using CrawlerIR2.Models;
+using FullTextSearch.Core;
 using FullTextSearch.Utils;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace FullTextSearch.UI
             
             if (_isBooleanModel)
             {
-                // articles = Controller.Instance.BooleanModelSearch(tbSearchText.Text, nudResults.Value);
+                MainController.Instance.RunSearcher(_isBooleanModel, tbSearchText.Text);
             } else
             {
                 articles = null;

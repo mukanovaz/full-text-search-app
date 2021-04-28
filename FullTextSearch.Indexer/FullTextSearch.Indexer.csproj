@@ -79,9 +79,12 @@
   <ItemGroup>
     <Compile Include="Indexer\IIndexer.cs" />
     <Compile Include="Indexer\Index.cs" />
+    <Compile Include="Indexer\Models\BooleanRetrievalModel .cs" />
     <Compile Include="Preprocessing\IPreprocessing.cs" />
     <Compile Include="Preprocessing\LucenePreprocessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\EvaluateTerms.cs" />
+    <Compile Include="Query\ExpressionTree.cs" />
     <Compile Include="Result\AbstractResult.cs" />
     <Compile Include="Result\IResult.cs" />
     <Compile Include="Result\Result.cs" />

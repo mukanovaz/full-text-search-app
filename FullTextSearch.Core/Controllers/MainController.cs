@@ -1,4 +1,5 @@
 ﻿using CrawlerIR2.Crawler;
+using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
 using FullTextSearch.Indexer;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace FullTextSearch.Core
         public List<Article> Articles { get; private set; }
         private static IndexerController IndexerController;
         private static CrawlerController CrawlerController;
+        private string _dbName;
 
         private MainController() { }
 
@@ -30,19 +32,21 @@ namespace FullTextSearch.Core
             }
         }
 
-        public void RunSearcher(bool is_boolean, string query)
+        public List<Article> RunSearcher(bool is_boolean, string query)
         {
             // Boolean model
             if (is_boolean)
             {
-                IndexerController.Search(query);
+                return IndexerController.Search(query, _dbName);
             }
+            return null;
         }
 
         public List<Article> RunCrawler(bool is_exist, ICrawler crawler = null, string db_name = "", BackgroundWorker backgroundWorker = null)
         {
             if (is_exist && db_name == "" && crawler != null && backgroundWorker == null) return null;
             if (!is_exist && db_name != "" && crawler == null && backgroundWorker != null) return null;
+            _dbName = db_name;
 
             if (is_exist)
             {

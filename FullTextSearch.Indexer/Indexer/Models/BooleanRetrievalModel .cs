@@ -15,7 +15,12 @@ namespace FullTextSearch.Indexer.Indexer.Models
         private const string _andKW = "AND";
         private const string _orKW = "OR";
         private const string BOOL_QUERY = @"(\()|(\))|(AND)|(OR)|(NOT)";
+        private LucenePreprocessing _preprocessing;
 
+        public BooleanRetrievalModel(LucenePreprocessing preprocessing)
+        {
+            _preprocessing = preprocessing;
+        }
 
         private string[] GetTokens(string query)
         {

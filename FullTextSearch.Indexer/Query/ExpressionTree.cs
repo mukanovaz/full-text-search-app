@@ -7,7 +7,7 @@ namespace FullTextSearch.Indexer.Query
     {
         public abstract class Node
         {
-            public abstract bool Eval(IPrincipal principal);
+            public abstract bool Eval(EvaluateTerms evaluate);
         }
 
         public abstract class UnaryNode : Node
@@ -54,9 +54,9 @@ namespace FullTextSearch.Indexer.Query
             {
             }
 
-            public override bool Eval(IPrincipal principal)
+            public override bool Eval(EvaluateTerms evaluate)
             {
-                return LeftExpression.Eval(principal) && RightExpression.Eval(principal);
+                return LeftExpression.Eval(evaluate) && RightExpression.Eval(evaluate);
             }
         }
 
@@ -67,9 +67,9 @@ namespace FullTextSearch.Indexer.Query
             {
             }
 
-            public override bool Eval(IPrincipal principal)
+            public override bool Eval(EvaluateTerms evaluate)
             {
-                return LeftExpression.Eval(principal) || RightExpression.Eval(principal);
+                return LeftExpression.Eval(evaluate) || RightExpression.Eval(evaluate);
             }
         }
 
@@ -80,9 +80,9 @@ namespace FullTextSearch.Indexer.Query
             {
             }
 
-            public override bool Eval(IPrincipal principal)
+            public override bool Eval(EvaluateTerms evaluate)
             {
-                return !Expression.Eval(principal);
+                return !Expression.Eval(evaluate);
             }
         }
 
@@ -100,9 +100,9 @@ namespace FullTextSearch.Indexer.Query
                 _roleName = roleName;
             }
 
-            public override bool Eval(IPrincipal principal)
+            public override bool Eval(EvaluateTerms evaluate)
             {
-                return principal.IsInRole(RoleName);
+                return evaluate.Evaluate(RoleName);
             }
         }
     }

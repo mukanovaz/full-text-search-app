@@ -1,6 +1,7 @@
 ﻿using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
 using FullTextSearch.Indexer.Indexer.Models;
+using FullTextSearch.Indexer.Query;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,7 +10,7 @@ namespace FullTextSearch.Indexer
 {
     public class Index : IIndexer, ISearcher
     {
-        private LucenePreprocessing Preprocessing;
+        private LucenePreprocessing _preprocessing;
         private readonly SortedSet<int> _indexedDocuments = new SortedSet<int>();
         public IEnumerable<int> IndexedDocuments => _indexedDocuments;
 
@@ -54,22 +55,32 @@ namespace FullTextSearch.Indexer
 
         public List<IResult> Search(string query)
         {
-            if (Preprocessing == null) return null;
+            if (_preprocessing == null) return null;
 
-            BooleanRetrievalModel retrievalModel = new BooleanRetrievalModel(this);
-            var t =  retrievalModel.ParseQuery(query);
-            return null;
-            // return GetPostingsFor(query).ToList();
+            List<IResult> results = new List<IResult>();
+            BooleanRetrievalModel retrievalModel = new BooleanRetrievalModel(_preprocessing);
+
+            var q =  retrievalModel.ParseQuery(query);
+
+            foreach (int doc in _indexedDocuments)
+            {
+                if (q.Eval(new EvaluateTerms(this, _preprocessing, doc.ToString())))
+                {
+                    results.Add(new Result() { DocumentID = doc.ToString() });
+                }
+            }
+
+            return results;
         }
 
 
         void IIndexer.Index(List<Article> documents)
         {
-            Preprocessing = new LucenePreprocessing();
+            _preprocessing = new LucenePreprocessing();
 
             for (int i = 0; i < documents.Count; i++)
             {
-                Preprocessing.ParseTokens(documents[i].GetText(), documents[i], this);
+                _preprocessing.ParseTokens(documents[i].GetText(), documents[i], this);
             }
         }
 

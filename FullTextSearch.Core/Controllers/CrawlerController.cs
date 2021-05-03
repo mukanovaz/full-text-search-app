@@ -18,13 +18,22 @@ namespace FullTextSearch.Core
         private const string MotorkariData3 = @"CrawlerIR_Html128.xml";
         private const string MotorkariData4 = @"CrawlerIR_Html192.xml";
 
+        private const string MotorkariData11 = @"CrawlerIR_TidyText.xml";
+        private const string MotorkariData22 = @"CrawlerIR_TidyText64.xml";
+        private const string MotorkariData33 = @"CrawlerIR_TidyText128.xml";
+        private const string MotorkariData44 = @"CrawlerIR_TidyText192.xml";
+
         public List<Article> GetDataFromFiles(string db_name)
         {
             List<Article> list = new List<Article>();
             Context context = new Context(db_name);
             if (context.Articles == null || context.Articles.Count() == 0)
             {
-                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData1), ref list, db_name);
+                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData11), ref list, db_name);
+                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData22), ref list, db_name);
+                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData33), ref list, db_name);
+                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData44), ref list, db_name);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData1), ref list, db_name);
                 //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData2), ref list, db_name);
                 //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData3), ref list, db_name);
                 //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData4), ref list, db_name);

@@ -35,5 +35,18 @@ namespace FullTextSearch.Indexer
             }
         }
 
+        public string[] ParseTokens(string text)
+        {
+            List<string> tokens = new List<string>();
+            TokenStream ts = Analyzer.TokenStream("text", new System.IO.StringReader(text));
+
+            while (ts.IncrementToken())
+            {
+                string token = ts.GetAttribute<ITermAttribute>().Term;
+                tokens.Add(token);
+            }
+            return tokens.ToArray();
+        }
+
     }
 }

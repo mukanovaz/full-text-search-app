@@ -2,14 +2,11 @@
 using FullTextSearch.Indexer.Query;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace FullTextSearch.Indexer.Indexer.Models
 {
-    class BooleanRetrievalModel
+    public class BooleanRetrievalModel : IRetrievalModel
     {
         private const string _notKW = "NOT";
         private const string _andKW = "AND";
@@ -22,12 +19,27 @@ namespace FullTextSearch.Indexer.Indexer.Models
             _preprocessing = preprocessing;
         }
 
+        List<IResult> IRetrievalModel.EvaluateResults(string query, Index index)
+        {
+            List<IResult> results = new List<IResult>();
+
+            var q = ParseQuery(query);
+            foreach (int doc in index.IndexedDocuments)
+            {
+                if (q.Eval(new EvaluateTerms(index, _preprocessing, doc.ToString())))
+                {
+                    results.Add(new Result(doc.ToString()));
+                }
+            }
+            return results;
+        }
+
         private string[] GetTokens(string query)
         {
             return query == null || query == "" ? null : Regex.Split(query, BOOL_QUERY);
         }
 
-        public ExpressionTree.Node ParseQuery(string query)
+        private ExpressionTree.Node ParseQuery(string query)
         {
             int idx = 0;
             string[] tokens = GetTokens(query);
@@ -109,5 +121,6 @@ namespace FullTextSearch.Indexer.Indexer.Models
                 return new ExpressionTree.RoleNode(token);
             }
         }
+
     }
 }

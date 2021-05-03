@@ -4,7 +4,6 @@ using FullTextSearch.Indexer.Indexer.Models;
 using FullTextSearch.Indexer.Query;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace FullTextSearch.Indexer
 {
@@ -18,7 +17,7 @@ namespace FullTextSearch.Indexer
 
         public void Append(string term, int doc_id)
         {
-            IResult result = new Result() { DocumentID = doc_id.ToString() };
+            IResult result = new Result(doc_id.ToString());
             if (_index.ContainsKey(term))
             {
                 _index[term].Add(result);
@@ -31,9 +30,9 @@ namespace FullTextSearch.Indexer
             _indexedDocuments.Add(doc_id);
         }
 
-        public void Append(string term, int doc_id, int start, int end)
+        public void Append(string term, int doc_id, int positionStart, int positionEnd)
         {
-            IResult result = new Result() { DocumentID = doc_id.ToString(), StartPosition = start, EndPositionPosition = end };
+            IResult result = new Result(doc_id.ToString()) { StartPosition = positionStart, EndPosition = positionEnd };
             if (_index.ContainsKey(term))
             {
                 _index[term].Add(result);
@@ -56,23 +55,13 @@ namespace FullTextSearch.Indexer
         public List<IResult> Search(string query)
         {
             if (_preprocessing == null) return null;
+            IRetrievalModel retrievalModel = new BooleanRetrievalModel(_preprocessing);
+            //IRetrievalModel retrievalModel = query.Contains("AND") || query.Contains("OR") || query.Contains("NOT")
+            //    ? new BooleanRetrievalModel(_preprocessing)
+            //    : (IRetrievalModel)new VectorRetrievalModel(_preprocessing);
 
-            List<IResult> results = new List<IResult>();
-            BooleanRetrievalModel retrievalModel = new BooleanRetrievalModel(_preprocessing);
-
-            var q =  retrievalModel.ParseQuery(query);
-
-            foreach (int doc in _indexedDocuments)
-            {
-                if (q.Eval(new EvaluateTerms(this, _preprocessing, doc.ToString())))
-                {
-                    results.Add(new Result() { DocumentID = doc.ToString() });
-                }
-            }
-
-            return results;
+            return retrievalModel.EvaluateResults(query, this);
         }
-
 
         void IIndexer.Index(List<Article> documents)
         {

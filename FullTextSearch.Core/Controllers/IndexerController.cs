@@ -21,10 +21,10 @@ namespace FullTextSearch.Core
 
         internal List<Article> Search(string query, string dbName)
         {
-            return BooleanModelSearch(query, dbName);
+            return GetResults(query, dbName);
         }
 
-        private List<Article> BooleanModelSearch(string query, string dbName, decimal top = 10)
+        private List<Article> GetResults(string query, string dbName, decimal top = 10)
         {
             List<Article> articles = new List<Article>();
             List<IResult> results = Index.Search(query);
@@ -43,7 +43,7 @@ namespace FullTextSearch.Core
                     Article obj = articles.FirstOrDefault(x => x.ArticleId == article.ArticleId);
                     if (obj == null)
                     {
-                        // TODO: article.Text = DataReader.Instance.AddHighlightToText(article.Text, res.StartPosition, res.EndPositionPosition);
+                        article.Text = DataReader.Instance.AddHighlightToText(article.Text, res.StartPosition, res.EndPosition);
                         articles.Add(article);
                     }
                 }

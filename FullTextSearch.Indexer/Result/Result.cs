@@ -1,11 +1,17 @@
-﻿using System;
+﻿
+using System.Collections.Generic;
 
 namespace FullTextSearch.Indexer
 {
     public class Result : AbstractResult
     {
         public int StartPosition { get; set; }
-        public int EndPositionPosition { get; set; }
+        public int EndPosition { get; set; }
+
+        public Result(string documentId)
+        {
+            DocumentID = documentId;
+        }
 
         public override int GetHashCode()
         {

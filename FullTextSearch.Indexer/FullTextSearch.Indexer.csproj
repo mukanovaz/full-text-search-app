@@ -80,6 +80,8 @@
     <Compile Include="Indexer\IIndexer.cs" />
     <Compile Include="Indexer\Index.cs" />
     <Compile Include="Indexer\Models\BooleanRetrievalModel .cs" />
+    <Compile Include="Indexer\Models\IRetrievalModel.cs" />
+    <Compile Include="Indexer\Models\VectorRetrievalModel .cs" />
     <Compile Include="Preprocessing\IPreprocessing.cs" />
     <Compile Include="Preprocessing\LucenePreprocessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

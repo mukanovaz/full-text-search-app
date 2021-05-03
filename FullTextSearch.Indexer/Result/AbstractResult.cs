@@ -1,5 +1,6 @@
 ﻿using CrawlerIR2.Indexer;
 using System;
+using System.Collections.Generic;
 
 namespace FullTextSearch.Indexer
 {

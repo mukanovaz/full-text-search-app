@@ -1,7 +1,6 @@
 ﻿using CrawlerIR2.Crawler;
 using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
-using FullTextSearch.Indexer;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -34,12 +33,7 @@ namespace FullTextSearch.Core
 
         public List<Article> RunSearcher(bool is_boolean, string query)
         {
-            // Boolean model
-            if (is_boolean)
-            {
-                return IndexerController.Search(query, _dbName);
-            }
-            return null;
+            return IndexerController.Search(query, _dbName);
         }
 
         public List<Article> RunCrawler(bool is_exist, ICrawler crawler = null, string db_name = "", BackgroundWorker backgroundWorker = null)

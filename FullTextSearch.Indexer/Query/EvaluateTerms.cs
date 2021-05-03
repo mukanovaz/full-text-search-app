@@ -31,7 +31,7 @@ namespace FullTextSearch.Indexer.Query
 
             List<IResult> documents = _index.GetPostingsFor(tokens[0]).ToList();
 
-            return documents.Contains(new Result() { DocumentID = _documentID });
+            return documents.Contains(new Result(_documentID));
         }
     }
 }

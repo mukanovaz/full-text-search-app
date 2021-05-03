@@ -29,9 +29,9 @@ namespace FullTextSearch.Indexer.Query
                 return false;
             }
 
-            List<IResult> documents = _index.GetPostingsFor(tokens[0]).ToList();
+            Dictionary<int, IResult> documents = _index.GetPostingsFor(tokens[0]);
 
-            return documents.Contains(new Result(_documentID));
+            return documents.ContainsKey(Int32.Parse(_documentID));
         }
     }
 }

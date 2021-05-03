@@ -5,12 +5,11 @@ namespace FullTextSearch.Indexer
 {
     public class Result : AbstractResult
     {
-        public int StartPosition { get; set; }
-        public int EndPosition { get; set; }
-
         public Result(string documentId)
         {
             DocumentID = documentId;
+            StartPosition = new List<long>();
+            EndPosition = new List<long>();
         }
 
         public override int GetHashCode()

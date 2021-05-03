@@ -86,6 +86,15 @@ namespace FullTextSearch.Utils
             return articles;
         }
 
+        internal string AddHighlightToText(string text, List<long> startPosition, List<long> endPosition)
+        {
+            for (int i = startPosition.Count - 1; i >= 0; i--)
+            {
+                text.Insert((int)endPosition[i], "</span>").Insert((int)startPosition[i], "<span id=\"search\" style=\"background-color: #FFFF00\">");
+            }
+            return text;
+        }
+
         internal string AddHighlightToText(string text, int start, int end)
         {
             return text.Insert(end, "</span>").Insert(start, "<span id=\"search\" style=\"background-color: #FFFF00\">");

@@ -29,6 +29,7 @@ namespace FullTextSearch.Indexer.Indexer.Models
                 if (q.Eval(new EvaluateTerms(index, _preprocessing, doc.ToString())))
                 {
                     results.Add(new Result(doc.ToString()));
+                    //results.Add(index[]);
                 }
             }
             return results;

@@ -33,5 +33,8 @@ namespace CrawlerIR2.Indexer
          * Metodu nepřepisujte (v potomcích) ani neupravujte
          */
         string ToString(string topic);
+
+        List<long> GetPositionStart();
+        List<long> GetPositionEnd();
     }
 }

@@ -21,9 +21,23 @@ namespace FullTextSearch.Indexer
          */
         public float Score { get; set; } = -1;
 
+        public List<long> StartPosition { get; set; }
+
+        public List<long> EndPosition { get; set; }
+
         public string GetDocumentID()
         {
             return DocumentID;
+        }
+
+        public List<long> GetPositionEnd()
+        {
+            return EndPosition;
+        }
+
+        public List<long> GetPositionStart()
+        {
+            return StartPosition;
         }
 
         public int GetRank()

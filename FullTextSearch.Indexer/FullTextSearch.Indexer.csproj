@@ -82,6 +82,7 @@
     <Compile Include="Indexer\Models\BooleanRetrievalModel .cs" />
     <Compile Include="Indexer\Models\IRetrievalModel.cs" />
     <Compile Include="Indexer\Models\VectorRetrievalModel .cs" />
+    <Compile Include="Preprocessing\CustomPreprocessing.cs" />
     <Compile Include="Preprocessing\IPreprocessing.cs" />
     <Compile Include="Preprocessing\LucenePreprocessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Result\AbstractResult.cs" />
     <Compile Include="Result\IResult.cs" />
     <Compile Include="Result\Result.cs" />
+    <Compile Include="Result\Term.cs" />
     <Compile Include="Searcher\ISearcher.cs" />
   </ItemGroup>
   <ItemGroup>

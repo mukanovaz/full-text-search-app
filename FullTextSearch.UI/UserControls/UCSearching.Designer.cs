@@ -76,6 +76,8 @@ namespace FullTextSearch.UI
             // 
             // tbSearchText
             // 
+            this.tbSearchText.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.tbSearchText.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tbSearchText.Location = new System.Drawing.Point(220, 20);
             this.tbSearchText.Name = "tbSearchText";
             this.tbSearchText.Size = new System.Drawing.Size(290, 20);

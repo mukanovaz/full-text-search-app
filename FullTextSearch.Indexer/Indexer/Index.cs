@@ -1,9 +1,7 @@
 ﻿using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
 using FullTextSearch.Indexer.Indexer.Models;
-using FullTextSearch.Indexer.Query;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FullTextSearch.Indexer
 {
@@ -12,25 +10,19 @@ namespace FullTextSearch.Indexer
         private LucenePreprocessing _preprocessing;
         private readonly SortedSet<int> _indexedDocuments = new SortedSet<int>();
         public IEnumerable<int> IndexedDocuments => _indexedDocuments;
+        public List<string> Terms => _indexedTerms;
 
+        /// <summary>
+        /// Index
+        /// <term, <nu>> 
+        /// </summary>
         private Dictionary<string, Dictionary<int, IResult>> _index = new Dictionary<string, Dictionary<int, IResult>>();
+        private List<string> _indexedTerms = new List<string>();
 
-        /*
-        public void Append(string term, int doc_id)
+        public Index(LucenePreprocessing preprocessing)
         {
-            IResult result = new Result(doc_id.ToString());
-            if (_index.ContainsKey(term))
-            {
-                _index[term].Add(result);
-            }
-            else
-            {
-                _index.Add(term, new List<IResult> { result });
-            }
-
-            _indexedDocuments.Add(doc_id);
+            _preprocessing = preprocessing;
         }
-        */
 
         public void Append(string term, int doc_id, int positionStart, int positionEnd)
         {
@@ -61,6 +53,7 @@ namespace FullTextSearch.Indexer
                         { doc_id, result }  
                     }
                 );
+                _indexedTerms.Add(term);
             }
 
             _indexedDocuments.Add(doc_id);
@@ -76,18 +69,16 @@ namespace FullTextSearch.Indexer
         public List<IResult> Search(string query)
         {
             if (_preprocessing == null) return null;
-            IRetrievalModel retrievalModel = new BooleanRetrievalModel(_preprocessing);
-            //IRetrievalModel retrievalModel = query.Contains("AND") || query.Contains("OR") || query.Contains("NOT")
-            //    ? new BooleanRetrievalModel(_preprocessing)
-            //    : (IRetrievalModel)new VectorRetrievalModel(_preprocessing);
+
+            IRetrievalModel retrievalModel = query.Contains("AND") || query.Contains("OR") || query.Contains("NOT")
+                ? new BooleanRetrievalModel(_preprocessing)
+                : (IRetrievalModel)new VectorRetrievalModel(_preprocessing);
 
             return retrievalModel.EvaluateResults(query, this);
         }
 
         void IIndexer.Index(List<Article> documents)
         {
-            _preprocessing = new LucenePreprocessing();
-
             for (int i = 0; i < documents.Count; i++)
             {
                 _preprocessing.ParseTokens(documents[i].GetText(), documents[i], this);

@@ -17,7 +17,7 @@ namespace FullTextSearch.Indexer.Indexer.Models
         public BooleanRetrievalModel(LucenePreprocessing preprocessing)
         {
             _preprocessing = preprocessing;
-        }
+        } 
 
         List<IResult> IRetrievalModel.EvaluateResults(string query, Index index)
         {

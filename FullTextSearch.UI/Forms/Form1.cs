@@ -97,6 +97,8 @@ namespace FullTextSearch
             btnSettings.ForeColor = Color.White;
 
             ShowUserControl(SearchingUC);
+
+            _ucSearching.AutoComplete();
         }
 
         private void btnDocuments_Click(object sender, EventArgs e)

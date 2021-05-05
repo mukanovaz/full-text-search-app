@@ -146,6 +146,10 @@
       <Project>{ef179a03-f6f1-415d-b381-e2420fd240e1}</Project>
       <Name>FullTextSearch.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FullTextSearch.Indexer\FullTextSearch.Indexer.csproj">
+      <Project>{f44a8e42-72dc-4aa5-b085-aa1af56e8c87}</Project>
+      <Name>FullTextSearch.Indexer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\document.png" />

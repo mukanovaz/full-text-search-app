@@ -1,4 +1,5 @@
 ﻿using CrawlerIR2.Models;
+using FullTextSearch.Indexer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -86,18 +87,41 @@ namespace FullTextSearch.Utils
             return articles;
         }
 
-        internal string AddHighlightToText(string text, List<long> startPosition, List<long> endPosition)
+        internal string AddHighlightToText(string query, Index index, Article article, LucenePreprocessing _preprocessing)
         {
-            for (int i = startPosition.Count - 1; i >= 0; i--)
+            string[] tokens = _preprocessing.ParseTokens(query);
+            List<long> start = new List<long>();
+            List<long> end = new List<long>();
+
+            foreach (string token in tokens)
             {
-                text.Insert((int)endPosition[i], "</span>").Insert((int)startPosition[i], "<span id=\"search\" style=\"background-color: #FFFF00\">");
+                if (token == "and" || token == "or" || token == "or") continue;
+                Result res = (Result) index.GetPostingsFor(token)[article.ArticleId];
+                if (res == null) continue;
+
+                start.AddRange(res.GetPositionStart());
+                end.AddRange(res.GetPositionEnd());
             }
-            return text;
+
+            // Sort
+            start.Sort();
+            end.Sort();
+
+            // Highlight
+            for (int i = start.Count - 1; i >= 0; i--)
+            {
+                article.Text = AddHighlightToText(article.Text, (int) start[i], (int) end[i]);
+            }
+            return article.Text;
         }
 
         internal string AddHighlightToText(string text, int start, int end)
         {
-            return text.Insert(end, "</span>").Insert(start, "<span id=\"search\" style=\"background-color: #FFFF00\">");
+            string newText;
+            newText = text.Insert(end, "</span>");
+            newText = newText.Insert(start, "<span id=\"search\" style=\"background-color: #FFFF00\">");
+
+            return newText;
         }
 
         public Article GetArticle(string url, string title, string info, string text)

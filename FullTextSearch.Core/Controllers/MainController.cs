@@ -1,6 +1,7 @@
 ﻿using CrawlerIR2.Crawler;
 using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
+using FullTextSearch.Indexer;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -10,7 +11,10 @@ namespace FullTextSearch.Core
     {
         private static MainController _instance = null;
 
+        private static LucenePreprocessing _preprocessing;
         public List<Article> Articles { get; private set; }
+        public Index Index { get; private set; }
+
         private static IndexerController IndexerController;
         private static CrawlerController CrawlerController;
         private string _dbName;
@@ -26,6 +30,7 @@ namespace FullTextSearch.Core
                     _instance = new MainController();
                     IndexerController = new IndexerController();
                     CrawlerController = new CrawlerController();
+                    _preprocessing = new LucenePreprocessing();
                 }
                 return _instance;
             }
@@ -33,7 +38,7 @@ namespace FullTextSearch.Core
 
         public List<Article> RunSearcher(bool is_boolean, string query)
         {
-            return IndexerController.Search(query, _dbName);
+            return IndexerController.Search(query, _dbName, _preprocessing);
         }
 
         public List<Article> RunCrawler(bool is_exist, ICrawler crawler = null, string db_name = "", BackgroundWorker backgroundWorker = null)
@@ -63,7 +68,7 @@ namespace FullTextSearch.Core
 
         public List<Article> RunIndexer(List<Article> articles)
         {
-            IndexerController.IndexArticles(articles);
+            Index = IndexerController.IndexArticles(articles, _preprocessing);
 
             return articles;
         }

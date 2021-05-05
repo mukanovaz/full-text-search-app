@@ -1,5 +1,6 @@
 ﻿using CrawlerIR2.Models;
 using FullTextSearch.Core;
+using FullTextSearch.Indexer;
 using FullTextSearch.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace FullTextSearch.UI
     {
         private bool _isBooleanModel = true;
         static UCDocumentsView _ucDocumentsView;
+        private bool _isLoaded = false;
 
         public Panel PanelContainer
         {
@@ -42,6 +44,20 @@ namespace FullTextSearch.UI
             PanelContainer.Controls.Add(DocumentsViewUC);
         }
 
+        public void AutoComplete()
+        {
+            if (MainController.Instance.Index == null) return;
+            if (_isLoaded) return;
+            List<string> terms = MainController.Instance.Index.Terms;
+            AutoCompleteStringCollection autoCompleteStringCollection = new AutoCompleteStringCollection();
+            foreach (string term in terms)
+            {
+                autoCompleteStringCollection.Add(term);
+            }
+            tbSearchText.AutoCompleteCustomSource = autoCompleteStringCollection;
+            _isLoaded = true;
+        }
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             List<Article> articles = new List<Article>();
@@ -61,5 +77,6 @@ namespace FullTextSearch.UI
         {
             _isBooleanModel = cmbSearchModel.SelectedIndex == 1;
         }
+
     }
 }

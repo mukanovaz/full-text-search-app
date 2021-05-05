@@ -18,7 +18,7 @@ namespace FullTextSearch.Indexer
         public LucenePreprocessing()
         {
             Analyzer = new CzechAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-            Analyzer.LoadStopWords(File.Open(Path.Combine(Environment.CurrentDirectory, @"Data\stopwords.txt"), FileMode.Open), Encoding.UTF8);
+            Analyzer.LoadStopWords(File.Open(@"Data\stopwords.txt", FileMode.Open), Encoding.UTF8);
         }
 
         public void ParseTokens(string text, Article article, Index index)

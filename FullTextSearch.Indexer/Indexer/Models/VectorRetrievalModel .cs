@@ -8,7 +8,7 @@ namespace FullTextSearch.Indexer.Indexer.Models
     {
         public VectorRetrievalModel(LucenePreprocessing preprocessing)
         {
-            Preprocessing = preprocessing;
+            Preprocessing = preprocessing; 
         }
 
         public LucenePreprocessing Preprocessing { get; }

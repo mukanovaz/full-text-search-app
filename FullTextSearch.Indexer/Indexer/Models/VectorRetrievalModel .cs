@@ -1,6 +1,7 @@
 ﻿using CrawlerIR2.Indexer;
 using FullTextSearch.SimpleLogger;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,16 +9,19 @@ namespace FullTextSearch.Indexer.Indexer.Models
 {
     public class VectorRetrievalModel : IRetrievalModel
     {
+        private Index _index;
+        /// <summary>
+        /// IDF
+        /// </summary>
+        private Dictionary<string, double> _termsVectors; 
+        private Dictionary<long, Vector> _queryVector;
+        private ConcurrentDictionary<long, Dictionary<long, Vector>> _documentVectors;
+
         /// <summary>
         /// Preprocessing instance
         /// </summary>
         public IPreprocessing Preprocessing { get; }
-        private Index _index;
-
-        private Dictionary<string, double> _termsVectors;
-        private double[] _queryVector;
-        
-        public Index Index { get;  set; }
+        public Index Index { get => _index; set { _index = value; } }
 
         public VectorRetrievalModel(IPreprocessing preprocessing)
         {
@@ -35,17 +39,54 @@ namespace FullTextSearch.Indexer.Indexer.Models
 
             Logger.Info("VectorRetrievalModel: Tranforming query to vector");
             Dictionary<string, int> queryDictionary = CreateQueryDictionary(Preprocessing.ParseTokens(query));
-            GetQueryVectors(queryDictionary, _index.TermsCount);
+            _queryVector = TransformToQueryVector(queryDictionary, _index.TermsCount);
 
             Logger.Info("VectorRetrievalModel: Calculating cosine similarity");
-            List<IResult> cos = TransformToDocumentVectors(_index.TermsCount);
 
-            var orderByDescendingResult = from s in cos
+            // Get document vector and find cos similarity
+            List<IResult> results = null;
+            if (_documentVectors == null)
+            {
+                _documentVectors = new ConcurrentDictionary<long, Dictionary<long, Vector>>();
+                results = GetDocumentVectorsAndCosSimilarity();
+            } else
+            {
+                results = GetDocumentVectorsAndCosSimilarity(isNewVector: false);
+            }
+
+            var orderByDescendingResult = from s in results
                                           orderby s.GetScore() descending
                                           select s;
             Logger.Info("VectorRetrievalModel: Done");
             // Sort
             return orderByDescendingResult.ToList();
+        }
+
+        private List<IResult> GetDocumentVectorsAndCosSimilarity(bool isNewVector = true, bool isNewCos = true)
+        {
+            var results = new List<IResult>();
+            foreach (var document in _index.IndexedDocuments)
+            {
+                Dictionary<long, Vector> docVector;
+                if (isNewVector)
+                {
+                    docVector = TransformToDocumentVectors(document);
+                    // Save whole vector to dictionary
+                    _documentVectors.TryAdd(document, docVector);
+                } else
+                {
+                    docVector = _documentVectors[document];
+                }
+
+                if (isNewCos)
+                {
+                    // Find cos similarity
+                    double cosSim = GetCos(docVector, _queryVector);
+                    results.Add(new Result(document.ToString()) { Score = cosSim });
+                }
+                
+            }
+            return results;
         }
 
         /// <summary>
@@ -74,52 +115,46 @@ namespace FullTextSearch.Indexer.Indexer.Models
         /// </summary>
         /// <param name="tokens">Tokens and their freq</param>
         /// <param name="terms_count"></param>
-        private void GetQueryVectors(Dictionary<string, int> tokens, int terms_count)
+        private Dictionary<long, Vector> TransformToQueryVector(Dictionary<string, int> tokens, int terms_count)
         {
-            _queryVector = new double[terms_count];
             int word_index = 0;
+            var vector = new Dictionary<long, Vector>();
             foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
             {
                 if (tokens.ContainsKey(entry.Key))
                 {
                     double tf_wght = 1 + Math.Log10(tokens[entry.Key]);
                     double tf_idf = tf_wght * _termsVectors[entry.Key];
-                    _queryVector[word_index] = tf_idf;
-                } else
-                {
-                    _queryVector[word_index] = 0;
-                }
+
+                    // Save vector value
+                    vector.Add(word_index, new Vector(word_index, tf_idf));
+                } 
                 word_index++;
             }
+            return vector;
         }
 
         /// <summary>
         /// Traverse list of documents and create documents vectors
         /// </summary>
-        private List<IResult> TransformToDocumentVectors(int terms_count)
-        {
-            List<IResult> results = new List<IResult>();
-
-            foreach (var document in _index.IndexedDocuments)
+        private Dictionary<long, Vector> TransformToDocumentVectors(int document)
+        {   
+            int word_index = 0;
+            var vector = new Dictionary<long, Vector>();
+            foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
             {
-                int word_index = 0;
-                double[] vector = new double[terms_count];
-                // TODO: parallel
-                foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
+                if (entry.Value.ContainsKey(document))
                 {
-                    if (entry.Value.ContainsKey(document))
-                    {
-                        double tf_wght = 1 + Math.Log10(entry.Value[document].TF);
-                        double tf_idf = tf_wght * _termsVectors[entry.Key];
-                        vector[word_index] = tf_idf;
-                    }
-                    word_index++;
+                    // Check if TF is not 0
+                    double tf_wght = entry.Value[document].TF > 0 ? 1 + Math.Log10(entry.Value[document].TF) : 0;
+                    double tf_idf = tf_wght * _termsVectors[entry.Key];
+                        
+                    // Save vector value
+                    vector.Add(word_index, new Vector(word_index, tf_idf));
                 }
-                // Find cos similarity
-                double cosSim = GetCos(vector, _queryVector);
-                results.Add(new Result(document.ToString()) { Score = cosSim });
+                word_index++;
             }
-            return results;
+            return vector;
         }
 
         /// <summary>
@@ -135,17 +170,14 @@ namespace FullTextSearch.Indexer.Indexer.Models
             {
                 return;
             }
-            
-            lock (Index.InvertedIndex)
+
+            foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
             {
-                foreach (KeyValuePair<string, Dictionary<int, Document>> entry in Index.InvertedIndex)
-                {
-                    double tmp = (double)Index.DocCount / (double)entry.Value.Count;
-                    double idf = Math.Log10(tmp);
-                    _termsVectors.Add(entry.Key, idf);
-                }
+                double tmp = (double)_index.DocCount / (double)entry.Value.Count;
+                double idf = Math.Log10(tmp);
+                _termsVectors.Add(entry.Key, idf);
             }
-            
+
         }
 
         /// <summary>
@@ -154,43 +186,73 @@ namespace FullTextSearch.Indexer.Indexer.Models
         /// <param name="docname"></param>
         /// <param name="queryname"></param>
         /// <returns></returns>
-        internal double GetCos(double[] docVectror, double[] queryVector)
+        internal double GetCos(Dictionary<long, Vector> docVectror, Dictionary<long, Vector> queryVector)
         {
-            if (docVectror.Length == 0 || queryVector.Length == 0)
+            if (docVectror == null || queryVector == null)
             {
-                throw new Exception("Cosine Distance: arrays cannot be zero length");
+                throw new Exception("Cosine Distance: vectors cannot be null");
             }
 
-            if (docVectror.Length != queryVector.Length)
-            {
-                throw new Exception("Cosine Distance: Vectors must be same length");
-            }
-
-            // Compute scalar
             double scalar = 0;
-            for (int i = 0; i < docVectror.Length; i++)
-            {
-                scalar += docVectror[i] * queryVector[i];
-            }
-
-            // Compute document vector norm
             double docVecNorm = 0;
-            for (int i = 0; i < docVectror.Length; i++)
-            {
-                docVecNorm += Math.Pow(docVectror[i], 2);
-            }
-            docVecNorm = Math.Sqrt(docVecNorm);
-
-            // Compute query vector norm
             double queryVecNorm = 0;
-            for (int i = 0; i < queryVector.Length; i++)
+            int position = 0;
+
+            while (_index.TermsCount >= position)
             {
-                queryVecNorm += Math.Pow(queryVector[i], 2);
+                bool isDoc      = docVectror.ContainsKey(position);
+                bool isQuery    = queryVector.ContainsKey(position);
+               
+                // Compute scalar
+                if (isDoc && isQuery)       // not 0
+                {
+                    scalar += docVectror[position].Value * queryVector[position].Value;
+                }
+
+                // Compute document vector norm
+                if (isDoc)
+                {
+                    docVecNorm += Math.Pow(docVectror[position].Value, 2);
+                }
+
+                // Compute query vector norm
+                if (isQuery)
+                {
+                    queryVecNorm += Math.Pow(queryVector[position].Value, 2);
+                }
+
+                position++;
             }
-            queryVecNorm = Math.Sqrt(queryVecNorm);
 
             // Cosine similarity
-            return scalar / (Math.Sqrt(docVecNorm) * Math.Sqrt(queryVecNorm)); ;
+            return scalar / (Math.Sqrt(docVecNorm) * Math.Sqrt(queryVecNorm));
+        }
+    }
+
+    sealed class Vector
+    {
+        public long Position { get; set; }
+        public double Value { get; set; }
+
+        public Vector (long position, double value)
+        {
+            Position = position;
+            Value = value;
+        }
+
+        public Vector(long position)
+        {
+            Position = position;
+        }
+
+        public override int GetHashCode()
+        {
+            return Position.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vector other && this.Position == other.Position;
         }
     }
 }

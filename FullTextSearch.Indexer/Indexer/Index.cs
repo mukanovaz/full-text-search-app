@@ -28,7 +28,7 @@ namespace FullTextSearch.Indexer
 
         #region PUBLIC_VARS
         public HashSet<int> IndexedDocuments => _indexedDocuments;
-        public SortedDictionary<string, Dictionary<int, Document>> InvertedIndex { get => _index; }
+        public IReadOnlyDictionary<string, Dictionary<int, Document>> InvertedIndex { get => _index; }
         public int TermsCount { get; private set; } = 0;
         public int DocCount { get; private set; } = 0;
         public IRetrievalModel RetrievalModel { get; set; }

@@ -1,5 +1,7 @@
 ﻿using CrawlerIR2.Models;
+using FullTextSearch.Core.Controllers;
 using FullTextSearch.Indexer;
+using FullTextSearch.SimpleLogger;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -31,11 +33,10 @@ namespace FullTextSearch.Utils
             }
         }
 
-        public List<Article> ReadData(string path, ref List<Article> articles, string table)
+        public List<Article> ReadData(string path, ref List<Article> articles, DatabaseController databaseController)
         {
             if (!File.Exists(path)) return null;
 
-            Context context = new Context(table);
             XmlDocument doc = new XmlDocument();
             doc.Load(path);
 
@@ -69,25 +70,20 @@ namespace FullTextSearch.Utils
                 };
                 try
                 {
-                    context.Articles.AddIfNotExists<Article>(a, x => x.ArticleId == a.ArticleId);
+                    databaseController.AddArticle(a);
                     articles.Add(a);
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error(ex.ToString());
                     continue;
                 }
             }
 
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (Exception ex) { }
-
             return articles;
         }
 
-        internal string AddHighlightToText(string query, Index index, Article article, LucenePreprocessing _preprocessing)
+        internal string AddHighlightToText(string query, Index index, Article article, IPreprocessing _preprocessing)
         {
             string[] tokens = _preprocessing.ParseTokens(query);
             List<long> start = new List<long>();
@@ -96,7 +92,12 @@ namespace FullTextSearch.Utils
             foreach (string token in tokens)
             {
                 if (token == "and" || token == "or" || token == "or") continue;
-                Result res = (Result) index.GetPostingsFor(token)[article.ArticleId];
+                var postings = index.GetPostingsFor(token);
+                if (postings == null || !postings.ContainsKey(article.ArticleId))
+                {
+                    continue;
+                }
+                Document res = postings[article.ArticleId];
                 if (res == null) continue;
 
                 start.AddRange(res.GetPositionStart());

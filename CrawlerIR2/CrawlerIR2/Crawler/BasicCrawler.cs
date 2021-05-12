@@ -1,13 +1,9 @@
 ﻿using CrawlerIR2.Models;
-using CrawlerIR2.Utils;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace CrawlerIR2.Crawler
 {
@@ -46,15 +42,7 @@ namespace CrawlerIR2.Crawler
 
                     try
                     {
-                        Article article = ProcessOneArticle(item);
-                        using (var context = new Context(TableName))
-                        {
-                            context.Articles.AddIfNotExists(article, x => x.ArticleId == article.ArticleId);
-                            
-                            context.SaveChanges();
-                        }
-
-                        //articles.Add(ProcessOneArticle(item));
+                        articles.Add(ProcessOneArticle(item));
                     }
                     catch (Exception ex)
                     {

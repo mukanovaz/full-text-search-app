@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FullTextSearch.Core
 {
@@ -23,32 +21,37 @@ namespace FullTextSearch.Core
         private const string MotorkariData33 = @"CrawlerIR_TidyText128.xml";
         private const string MotorkariData44 = @"CrawlerIR_TidyText192.xml";
 
-        public List<Article> GetDataFromFiles(string db_name)
+        public List<Article> GetDataFromFiles(IEnumerable<Article> articles, Controllers.DatabaseController _databaseController)
         {
             List<Article> list = new List<Article>();
-            Context context = new Context(db_name);
-            if (context.Articles == null || context.Articles.Count() == 0)
+            if (articles == null || articles.Count() == 0)
             {
-                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData11), ref list, db_name);
-                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData22), ref list, db_name);
-                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData33), ref list, db_name);
-                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData44), ref list, db_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData1), ref list, db_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData2), ref list, db_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData3), ref list, db_name);
-                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData4), ref list, db_name);
+                DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData11), ref list, _databaseController);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData22), ref list, _databaseController);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData33), ref list, _databaseController);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData44), ref list, _databaseController);
+
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData1), ref list, _databaseController);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData2), ref list, _databaseController);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData3), ref list, _databaseController);
+                //DataReader.Instance.ReadData(Path.Combine(Environment.CurrentDirectory, DataFolder, MotorkariData4), ref list, _databaseController);
             }
             else
             {
-                list = context.Articles.ToList();
+                list = articles.ToList();
             }
 
             return list;
         }
 
-        public List<Article> GetDataFromWeb(ICrawler crawler)
+        public List<Article> GetDataFromWeb(ICrawler crawler, Controllers.DatabaseController _databaseController)
         {
-            return crawler == null ? null : crawler.GetArticles();
+            List<Article> articles = crawler?.GetArticles();
+            foreach (Article article in articles)
+            {
+                _databaseController.AddArticle(article);
+            }
+            return articles;
         }
 
     }

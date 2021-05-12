@@ -1,56 +1,80 @@
 ﻿using CrawlerIR2.Indexer;
 using CrawlerIR2.Models;
+using FullTextSearch.Core.Controllers;
 using FullTextSearch.Indexer;
+using FullTextSearch.Indexer.Indexer.Models;
+using FullTextSearch.SimpleLogger;
 using FullTextSearch.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace FullTextSearch.Core
 {
     class IndexerController
     {
-        private Index Index;
+        public Index Index;
+        private IPreprocessing _preprocessing;
+        private VectorRetrievalModel _vectorRetrievalModel;
 
-        public Index IndexArticles(List<Article> articles, LucenePreprocessing _preprocessing)
+        public List<Article> LastArticles { get; private set; }
+
+        public Index IndexArticles(List<Article> articles, IPreprocessing preprocessing, VectorRetrievalModel vectorRetrievalModel)
         {
+            _preprocessing = preprocessing; 
+            _vectorRetrievalModel = vectorRetrievalModel;
+            Logger.Info("IndexerController: start indexing..");
             Index = new Index(_preprocessing);
+
             (Index as IIndexer).Index(articles);
+
+            Logger.Info("IndexerController: index is ready.");
+
+            var thread = new Thread(CalculateIDF);
+            thread.IsBackground = true;
+            thread.Start();
 
             return Index;
         }
 
-        internal List<Article> Search(string query, string dbName, LucenePreprocessing _preprocessing)
+        private void IndexDocuments(List<Article> articles)
         {
-            return GetResults(query, dbName, _preprocessing);
+            (Index as IIndexer).Index(articles);
         }
 
-        private List<Article> GetResults(string query, string dbName, LucenePreprocessing _preprocessing,  decimal top = 10)
+        private void CalculateIDF()
         {
-            List<Article> articles = new List<Article>();
+            _vectorRetrievalModel.Index = Index;
+            _vectorRetrievalModel.CalculateIDF();
+        }
+
+        internal List<Article> Search(string query,
+            IPreprocessing _preprocessing, IRetrievalModel retrievalModel, DatabaseController databaseController)
+        {
+            Index.RetrievalModel = retrievalModel;
+            return GetResults(query, _preprocessing, databaseController);
+        }
+
+        private List<Article> GetResults(string query, IPreprocessing _preprocessing, DatabaseController databaseController)
+        {
+            LastArticles = new List<Article>();
             List<IResult> results = Index.Search(query);
 
             for (int i = 0; i < results.Count; i++)
             {
-                // Break if top 
-                if (articles.Count == top) break;
-
                 Result res = (Result)results[i];
                 string id = res.GetDocumentID();
 
                 // Get article from database
-                using (var context = new Context(dbName))
-                {
-                    Article article = context.Articles
-                                       .Where(s => s.ArticleId.ToString() == id)
-                                       .FirstOrDefault<Article>();
+                Article article = databaseController.GetArticleById(Int32.Parse(id));
+                if (article == null) return null;
+                // Higtlight query text
+                article.Text = DataReader.Instance.AddHighlightToText(query, Index, article, _preprocessing);
 
-                    // Higtlight query text
-                    article.Text = DataReader.Instance.AddHighlightToText(query, Index, article, _preprocessing);
-
-                    articles.Add(article);
-                }
+                LastArticles.Add(article);
             }
-            return articles;
+            return LastArticles;
         }   
     }
 }

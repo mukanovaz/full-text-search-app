@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CrawlerController.cs" />
+    <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\IndexerController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +90,9 @@
     <Content Include="Data\CrawlerIR_TidyText64.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\cz.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\stopwords.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -101,6 +105,10 @@
     <ProjectReference Include="..\FullTextSearch.Indexer\FullTextSearch.Indexer.csproj">
       <Project>{f44a8e42-72dc-4aa5-b085-aa1af56e8c87}</Project>
       <Name>FullTextSearch.Indexer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FullTextSearch.SimpleLogger\FullTextSearch.SimpleLogger.csproj">
+      <Project>{83df29c1-a3e9-4cfd-92c2-41dad640d4d9}</Project>
+      <Name>FullTextSearch.SimpleLogger</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

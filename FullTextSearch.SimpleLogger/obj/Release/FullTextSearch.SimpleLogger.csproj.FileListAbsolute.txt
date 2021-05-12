@@ -1,0 +1,6 @@
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch.SimpleLogger\bin\Release\FullTextSearch.SimpleLogger.dll
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch.SimpleLogger\bin\Release\FullTextSearch.SimpleLogger.pdb
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch.SimpleLogger\obj\Release\FullTextSearch.SimpleLogger.csprojAssemblyReference.cache
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch.SimpleLogger\obj\Release\FullTextSearch.SimpleLogger.csproj.CoreCompileInputs.cache
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch.SimpleLogger\obj\Release\FullTextSearch.SimpleLogger.dll
+D:\Study\ZCU\2.semestr\IR\SemestralWork\kiv-ir-net\FullTextSearch.SimpleLogger\obj\Release\FullTextSearch.SimpleLogger.pdb

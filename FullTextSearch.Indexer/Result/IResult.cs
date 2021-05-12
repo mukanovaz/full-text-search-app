@@ -18,7 +18,7 @@ namespace CrawlerIR2.Indexer
          *
          * @return skóre podobnosti mezi dokumentem a dotazem
          */
-        float GetScore();
+        double GetScore();
 
         /**
          * Pořadí mezi ostatními vrácenými dokumenty
@@ -33,8 +33,5 @@ namespace CrawlerIR2.Indexer
          * Metodu nepřepisujte (v potomcích) ani neupravujte
          */
         string ToString(string topic);
-
-        List<long> GetPositionStart();
-        List<long> GetPositionEnd();
     }
 }

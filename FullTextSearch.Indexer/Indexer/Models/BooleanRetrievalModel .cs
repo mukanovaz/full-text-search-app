@@ -1,5 +1,6 @@
 ﻿using CrawlerIR2.Indexer;
 using FullTextSearch.Indexer.Query;
+using FullTextSearch.SimpleLogger;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -12,9 +13,9 @@ namespace FullTextSearch.Indexer.Indexer.Models
         private const string _andKW = "AND";
         private const string _orKW = "OR";
         private const string BOOL_QUERY = @"(\()|(\))|(AND)|(OR)|(NOT)";
-        private LucenePreprocessing _preprocessing;
+        private readonly IPreprocessing _preprocessing;
 
-        public BooleanRetrievalModel(LucenePreprocessing preprocessing)
+        public BooleanRetrievalModel(IPreprocessing preprocessing)
         {
             _preprocessing = preprocessing;
         } 
@@ -22,16 +23,17 @@ namespace FullTextSearch.Indexer.Indexer.Models
         List<IResult> IRetrievalModel.EvaluateResults(string query, Index index)
         {
             List<IResult> results = new List<IResult>();
-
+            Logger.Info("BooleanRetrievalModel: parsing query");
             var q = ParseQuery(query);
+            Logger.Info("BooleanRetrievalModel: evaluating terms");
             foreach (int doc in index.IndexedDocuments)
             {
                 if (q.Eval(new EvaluateTerms(index, _preprocessing, doc.ToString())))
                 {
                     results.Add(new Result(doc.ToString()));
-                    //results.Add(index[]);
                 }
             }
+            Logger.Info("BooleanRetrievalModel: done");
             return results;
         }
 

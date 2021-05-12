@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HtmlAgilityPack;
-using System.Threading.Tasks;
-using CrawlerIR2.Crawler;
 using CrawlerIR2.Models;
 using CrawlerIR2.Utils;
 
-namespace CrawlerIR2
+namespace CrawlerIR2.Crawler
 {
-    class CrawlerMotorkari : ICrawler
+    public class CrawlerMotorkari : ICrawler
     {
         const string Base_url = "https://www.motorkari.cz/clanky/";
         const string page_url = "https://www.motorkari.cz/clanky/?pgr=";
@@ -18,7 +15,7 @@ namespace CrawlerIR2
         const int First_page = 1;
         const int Last_page = 256;
 
-        private string Type = "_Html";
+        private string Type = "_TidyText";
 
 
         public List<Article> GetArticles()
@@ -28,7 +25,7 @@ namespace CrawlerIR2
 
             for (int i = First_page; i < Last_page; i++)
             {
-                if (i % 64 == 0) Type = "_Html" + i.ToString();
+                if (i % 64 == 0) Type = "_TidyText" + i.ToString();
 
                 Console.WriteLine("=================== " + i.ToString() + " ===================");
                 HtmlDocument document = web.Load(page_url + i.ToString());
@@ -84,11 +81,7 @@ namespace CrawlerIR2
 
         public Article ProcessOneArticle(HtmlNode node)
         {
-            string page;
-            string author;
-            string date;
-            string views;
-            string category = FileManager.Instance.GetString(node.InnerText.Replace("\t", string.Empty).Replace("\r", string.Empty), @"Kategorie:(?<string>[\s]*[a-zA-Z]*)"); // node.SelectSingleNode(".//div[@class='parameters']//tr//a").InnerText 
+            string category = FileManager.Instance.GetString(node.InnerText.Replace("\t", string.Empty).Replace("\r", string.Empty), @"Kategorie:(?<string>[\s]*[^\n]*)");
             string articleUrl = "https:" + node.SelectSingleNode(".//h3/a/@href").GetAttributeValue("href", string.Empty);
             string articleTitle = node.SelectSingleNode(".//h3/a/@href").InnerText;
             Article res;
@@ -98,15 +91,23 @@ namespace CrawlerIR2
             HtmlDocument document = web.Load(articleUrl);
             HtmlNode article = document.DocumentNode.SelectSingleNode("//article");
 
-            page = document.DocumentNode.InnerText.Replace("\t", string.Empty).Replace("\r", string.Empty);
-            views = FileManager.Instance.GetString(page, @"Zobrazeno: (?<string>[^x]*)");
-            author = FileManager.Instance.GetString(page, @"Text:[\s]*(?<string>[^\|]*) ");
-            date = FileManager.Instance.GetDateString(page, @"Zveřejněno: (?<date>\d{1,2}.\d{1,2}.\d{4})");
+            string page = document.DocumentNode.InnerText.Replace("\t", string.Empty).Replace("\r", string.Empty);
+            string views = FileManager.Instance.GetString(page, @"Zobrazeno: (?<string>[^x]*)");
+            string author = FileManager.Instance.GetString(page, @"Text:[\s]*(?<string>[^\|]*) ");
+            string date = FileManager.Instance.GetDateString(page, @"Zveřejněno: (?<date>\d{1,2}.\d{1,2}.\d{4})");
+
+            // Extract text
+            HtmlNode anotace = article.SelectSingleNode("//article/div[@class='anotace']");
+            HtmlNode content = article.SelectSingleNode("//article/div[@class='content']");
 
             Console.WriteLine("\tINFO: " + date + "\t" + articleUrl);
 
             // Get comments
             List<Comment> comments = GetComments(articleUrl);
+
+            // Build text
+            string text = BuildText(articleTitle, category, author, date, views, anotace.InnerText, content.InnerText, comments);
+
             try
             {
                 res = FileManager.Instance.SaveArticle(new Article()
@@ -115,7 +116,7 @@ namespace CrawlerIR2
                     Date = date,
                     Title = articleTitle,
                     Views = views,
-                    Text = article.InnerText
+                    Text = text
                    .Replace("\r", string.Empty)
                    .Replace("\t", string.Empty)
                    .Replace("\n\n", "\n")
@@ -133,18 +134,56 @@ namespace CrawlerIR2
             return res;
         }
 
+        public string BuildText(string title, string category, string author, string date, string views, string anotace, string content, List<Comment> comments)
+        {
+            string newText = $"<h1>{title}</h1>\n";
+            newText += $"<b>Text:</b> {author}\n";
+            newText += $"<b>Zveřejněno:</b> {date}\n";
+            newText += $"<b>Zobrazeno:</b> {views}\n";
+            newText += $"<b>Kategorie:</b> {category}\n";
+            newText += $"<blockquote>{anotace}</blockquote>";
+            newText += $"<br/><br/>";
+            newText += content;
+            newText += $"<br/><br/>";
+
+            newText += "<h2>Komentáře</h2>" + "\n";
+            // Add comments
+            if (comments == null) return newText;
+
+            foreach (Comment comment in comments)
+            {
+                newText += $"<strong>{comment.Author}</strong> napsal {comment.DateCreated}\n";
+                newText += $"<blockquote>{comment.Text}</blockquote>";
+            }
+            return newText;
+        }
+
+        public string BuildText(string title, string category, string author, string date, string views, string content)
+        {
+            string newText = $"<h1>{title}</h1>\n";
+            newText += $"<b>Text:</b> {author}\n";
+            newText += $"<b>Zveřejněno:</b> {date}\n";
+            newText += $"<b>Zobrazeno:</b> {views}\n";
+            newText += $"<b>Kategorie:</b> {category}\n";
+            //newText += $"<blockquote>{anotace}</blockquote>";
+            //newText += $"<br/><br/>";
+            newText += content;
+
+            return newText;
+        }
+
         public Comment ProcessOneComment(HtmlNode item, string url)
         {
             string author = item.SelectSingleNode(".//a[@class='user']").InnerText;
-            string date = FileManager.Instance.GetDateString(item.InnerText, @"napsal (?<date>\d{1,2}.\d{1,2}.\d{4})"); ;
-
+            DateTime date = FileManager.Instance.GetDateFromString(item.InnerText, @"napsal (?<date>\d{1,2}.\d{1,2}.\d{4})"); ;
+            string id = item.GetAttributeValue("id", string.Empty);
+            string text = item.SelectSingleNode(".//p").InnerText;
             return new Comment()
             {
                 Author = author,
-                DateCreated = Convert.ToDateTime(date),
-                Text = item.InnerText.Replace("\r", string.Empty).Replace("\t", string.Empty).Replace("\n\n", "\n").Replace("&nbsp;", "").Trim(),
-                HtmlText = item.InnerHtml,
-                TidyText = item.InnerText,
+                DateCreated = date,
+                Text = text.Replace("\r", string.Empty).Replace("\t", string.Empty).Replace("\n\n", "\n").Replace("&nbsp;", "").Trim(),
+                ArticleId = Int32.Parse(id),
                 Url = url
             };
         }

@@ -80,11 +80,13 @@
     <Compile Include="Crawler\BasicCrawler.cs" />
     <Compile Include="Crawler\CrawlerMotorkari.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
+    <Compile Include="DB\ArticleRepository.cs" />
+    <Compile Include="DB\IArticleRepository.cs" />
     <Compile Include="Interface\IDocument.cs" />
     <Compile Include="Models\ArticleLight.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\Context .cs" />
+    <Compile Include="DB\Context .cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\FileManager.cs" />

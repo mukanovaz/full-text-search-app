@@ -82,22 +82,32 @@
     <Compile Include="Indexer\Models\BooleanRetrievalModel .cs" />
     <Compile Include="Indexer\Models\IRetrievalModel.cs" />
     <Compile Include="Indexer\Models\VectorRetrievalModel .cs" />
-    <Compile Include="Preprocessing\CustomPreprocessing.cs" />
+    <Compile Include="Preprocessing\Tokenizer\AdvancedTokenizer.cs" />
+    <Compile Include="Preprocessing\BasicPreprocessing.cs" />
+    <Compile Include="Preprocessing\Stemmer\CzechStemmerAggressive.cs" />
+    <Compile Include="Preprocessing\Stemmer\CzechStemmerLight.cs" />
+    <Compile Include="Preprocessing\Stemmer\CzechStemmerUtility.cs" />
     <Compile Include="Preprocessing\IPreprocessing.cs" />
+    <Compile Include="Preprocessing\Stemmer\IStemmer.cs" />
+    <Compile Include="Preprocessing\Tokenizer\ITokenizer.cs" />
     <Compile Include="Preprocessing\LucenePreprocessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\EvaluateTerms.cs" />
     <Compile Include="Query\ExpressionTree.cs" />
     <Compile Include="Result\AbstractResult.cs" />
+    <Compile Include="Result\Document.cs" />
     <Compile Include="Result\IResult.cs" />
     <Compile Include="Result\Result.cs" />
-    <Compile Include="Result\Term.cs" />
     <Compile Include="Searcher\ISearcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrawlerIR2\CrawlerIR2\FullTextSearch.Crawler.csproj">
       <Project>{1bc2b356-cfc4-4d86-aad8-82441403c251}</Project>
       <Name>FullTextSearch.Crawler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FullTextSearch.SimpleLogger\FullTextSearch.SimpleLogger.csproj">
+      <Project>{83df29c1-a3e9-4cfd-92c2-41dad640d4d9}</Project>
+      <Name>FullTextSearch.SimpleLogger</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

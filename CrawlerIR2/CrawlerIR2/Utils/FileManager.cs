@@ -1,12 +1,8 @@
 ﻿using CrawlerIR2.Models;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace CrawlerIR2.Utils
@@ -43,7 +39,18 @@ namespace CrawlerIR2.Utils
             ).ToString("dd.MM.yyyy");
 
             return result;
+        }
 
+        public DateTime GetDateFromString(string text, string pattern)
+        {
+            Match date = Regex.Match(text, pattern);
+            string d = date.Length == 0 ? "28.04.2021" : date.Groups["date"].Value;
+
+            DateTime result = DateTime.ParseExact(d, "d.M.yyyy",
+                CultureInfo.InvariantCulture
+            );
+
+            return result;
         }
 
         public string GetString(string text, string pattern)
@@ -54,41 +61,10 @@ namespace CrawlerIR2.Utils
 
         public Article SaveArticle(Article article, string type)
         {
-            //SaveArticleTidy(article, "_TidyText3");
-            SaveArticleHtml(article, type);
+            SaveArticleTidy(article, type);
             return article;
         }
 
-        public void SaveArticles(List<Article> articles)
-        {
-            foreach (Article article in articles)
-            {
-                //SaveArticleHtml(article, "_Html");
-                //SaveArticleAll(article, "_AllText");
-                SaveArticleTidy(article, "_TidyText");
-            }
-        }
-
-        public void SaveArticleAll(Article article, string key)
-        {
-            string path = Path.Combine(Environment.CurrentDirectory, Starage_url, Last_file_name + key + EXTENSION);
-
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.WriteLine(article.Url);
-                sw.WriteLine(article.Text);
-
-                if (article.Comments != null)
-                {
-                    foreach (Comment item in article.Comments)
-                    {
-                        sw.WriteLine(item.CommentId);
-                        sw.WriteLine(item.Text);
-                    }
-                }
-            }
-            //ChangeFileName("_AllText");
-        }
         public string CleanInvalidXmlChars(string text)
         {
             string re = @"[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD\x10000-x10FFFF]";
@@ -106,7 +82,7 @@ namespace CrawlerIR2.Utils
                 // Append
                 doc.Load(path);
                 articlesNode = doc.DocumentElement;
-            } 
+            }
             else
             {
                 // Add new
@@ -128,7 +104,7 @@ namespace CrawlerIR2.Utils
             articleNode.AppendChild(CreateNode(doc, "Date", article.Date));
 
             XmlNode textNode = doc.CreateElement("Text");
-            XmlCDataSection CData = doc.CreateCDataSection(CleanInvalidXmlChars(article.Text));
+            XmlCDataSection CData = doc.CreateCDataSection(article.Text);
             articleNode.AppendChild(textNode);
             textNode.AppendChild(CData);
 
@@ -147,7 +123,7 @@ namespace CrawlerIR2.Utils
                     commentNode.AppendChild(CreateNode(doc, "Author", comment.Author));
 
                     XmlNode textNode2 = doc.CreateElement("Text");
-                    XmlCDataSection CData2 = doc.CreateCDataSection(CleanInvalidXmlChars(comment.TidyText));
+                    XmlCDataSection CData2 = doc.CreateCDataSection(CleanInvalidXmlChars(comment.Text));
                     commentNode.AppendChild(textNode2);
                     textNode2.AppendChild(CData2);
                 }
@@ -164,42 +140,9 @@ namespace CrawlerIR2.Utils
             return node;
         }
 
-        public void SaveArticleHtml(Article article, string key)
-        {
-            string path = Path.Combine(Environment.CurrentDirectory, Starage_url, Last_file_name + key + EXTENSION);
-
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.WriteLine(article.Url);
-                sw.WriteLine(article.Text);
-
-                if (article.Comments != null)
-                {
-                    foreach (Comment item in article.Comments)
-                    {
-                        sw.WriteLine(item.CommentId);
-                        sw.WriteLine(item.HtmlText);
-                    }
-                }
-            }
-
-            //ChangeFileName("_Html");
-        }
-
         private string GetCurrentTime()
         {
             return DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss");
-        }
-
-        private void ChangeFileName(string key)
-        {
-            string new_path = Starage_url + GetCurrentTime();
-            if (File.Exists(new_path + key + EXTENSION))
-            {
-                File.Delete(new_path + key + EXTENSION);
-            }
-            File.Move(Last_file_name, new_path + key + EXTENSION);
-            Last_file_name = new_path;
         }
     }
 }

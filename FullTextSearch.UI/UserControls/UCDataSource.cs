@@ -16,7 +16,7 @@ namespace FullTextSearch.UI
         static UCCrawlerSettings _ucCrawlerSettings;
         static UCDocumentsView _ucDocumentsView;
 
-        public List<Article> Articles;
+        public List<Article> Articles { get; private set; }
 
         public UCDataSource()
         {

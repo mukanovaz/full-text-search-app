@@ -19,35 +19,16 @@ namespace FullTextSearch.Indexer
         /**
          * Skóre podobnosti mezi tímto výsledkem (dokumentem) a dotazem
          */
-        public float Score { get; set; } = -1;
-
-        public List<long> StartPosition { get; set; }
-
-        public List<long> EndPosition { get; set; }
+        public double Score { get; set; } = -1;
 
         public string GetDocumentID()
         {
             return DocumentID;
         }
 
-        public List<long> GetPositionEnd()
-        {
-            return EndPosition;
-        }
-
-        public List<long> GetPositionStart()
-        {
-            return StartPosition;
-        }
-
         public int GetRank()
         {
             return Rank;
-        }
-
-        public float GetScore()
-        {
-            return Score;
         }
 
         override public string ToString()
@@ -63,9 +44,14 @@ namespace FullTextSearch.Indexer
         * Metoda používaná pro generování výstupu pro vyhodnocovací skript.
         * Metodu nepřepisujte (v potomcích) ani neupravujte
         */
-        public string ToString(String topic)
+        public string ToString(string topic)
             {
                 return topic + " Q0 " + DocumentID + " " + Rank + " " + Score + " runindex1";
             }
+
+        double IResult.GetScore()
+        {
+            return Score;
         }
+    }
 }

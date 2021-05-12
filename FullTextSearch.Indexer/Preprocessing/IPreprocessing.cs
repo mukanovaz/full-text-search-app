@@ -5,7 +5,8 @@ namespace FullTextSearch.Indexer
 {
     public interface IPreprocessing
     {
-        void ParseTokens(string text, Article article, ref Dictionary<string, List<Result>> invertedIndex);
-        void ParseQuery(string searchTerm, string searchField);
+        string GetProcessedForm(string text);
+        void ParseTokens(string text, Article article, Index index);
+        string[] ParseTokens(string text);
     }
 }

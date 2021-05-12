@@ -2,19 +2,21 @@
 using System.Windows.Forms;
 using System.Drawing;
 using FullTextSearch.UI;
-using System.Collections.Generic;
+using FullTextSearch.SimpleLogger;
+using FullTextSearch.UI.Forms;
+using FullTextSearch.UI.UserControls;
 
 namespace FullTextSearch
 {
     public partial class Form1 : Form
     {
 
-        static Form1 _obj;
-        static UCDataSource _ucDataSource;
-        static UCSearching _ucSearching;
-        private Color _firstColor = Color.FromArgb(247, 243, 233);  // Main buttons
-        private Color _secondColor = Color.FromArgb(94, 170, 168);  // Other buttons
-        private Color _thirdColor = Color.FromArgb(247, 243, 233);
+        private static Form1 _obj;
+        private static UCDataSource _ucDataSource;
+        private static UCSearching _ucSearching;
+        private static UCcrudDocuments _uccrudDocuments;
+        private readonly Color _firstColor = Color.FromArgb(247, 243, 233);  // Main buttons
+        private readonly Color _secondColor = Color.FromArgb(94, 170, 168);  // Other buttons
 
         public static Form1 Instance
         {
@@ -31,12 +33,31 @@ namespace FullTextSearch
         public Form1()
         {
             InitializeComponent();
+
+            // Init logger form
+            LoggerForm loggerForm = new LoggerForm();
+            loggerForm.Show();
+            // Redirect console output to TextBox
+            Console.SetOut(new ControlWriter(loggerForm.LoggerTextBox));
         }
 
         public Panel PanelContainer
         {
             get { return panelContainer; }
             set { panelContainer = value; }
+        }
+
+        public UCcrudDocuments CRUDDocuments
+        {
+            get
+            {
+                if (_uccrudDocuments == null)
+                {
+                    _uccrudDocuments = new UCcrudDocuments();
+                    _uccrudDocuments.Dock = DockStyle.Fill;
+                }
+                return _uccrudDocuments;
+            }
         }
 
         public UCDataSource DataSourceUC
@@ -71,13 +92,9 @@ namespace FullTextSearch
 
             PanelContainer.Controls.Add(DataSourceUC);
             PanelContainer.Controls.Add(SearchingUC);
+            PanelContainer.Controls.Add(CRUDDocuments);
 
             ShowUserControl(DataSourceUC);
-        }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btnSearch_Click_1(object sender, EventArgs e)
@@ -116,6 +133,10 @@ namespace FullTextSearch
             btnSettings.ForeColor = Color.White;
             btnSearch.ForeColor = Color.White;
             btnDataSource.ForeColor = Color.White;
+
+            // Fill datasource
+            ShowUserControl(_uccrudDocuments);
+            _uccrudDocuments.FillTable(_ucDataSource.Articles);
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
@@ -133,10 +154,6 @@ namespace FullTextSearch
             btnDataSource.ForeColor = Color.White;
             btnSearch.ForeColor = Color.White;
             btnDocuments.ForeColor = Color.White;
-            // Set UC
-            UCSearching ucSearching = new UCSearching();
-            ucSearching.Dock = DockStyle.Fill;
-            PanelContainer.Controls.Add(ucSearching);
         }
 
         private void btnDataSource_Click(object sender, EventArgs e)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch.Core", "Full
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch.Indexer", "FullTextSearch.Indexer\FullTextSearch.Indexer.csproj", "{F44A8E42-72DC-4AA5-B085-AA1AF56E8C87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch.SimpleLogger", "FullTextSearch.SimpleLogger\FullTextSearch.SimpleLogger.csproj", "{83DF29C1-A3E9-4CFD-92C2-41DAD640D4D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F44A8E42-72DC-4AA5-B085-AA1AF56E8C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F44A8E42-72DC-4AA5-B085-AA1AF56E8C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F44A8E42-72DC-4AA5-B085-AA1AF56E8C87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83DF29C1-A3E9-4CFD-92C2-41DAD640D4D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83DF29C1-A3E9-4CFD-92C2-41DAD640D4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83DF29C1-A3E9-4CFD-92C2-41DAD640D4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83DF29C1-A3E9-4CFD-92C2-41DAD640D4D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

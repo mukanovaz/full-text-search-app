@@ -1,6 +1,4 @@
 ﻿
-using System.Collections.Generic;
-
 namespace FullTextSearch.Indexer
 {
     public class Result : AbstractResult
@@ -8,8 +6,6 @@ namespace FullTextSearch.Indexer
         public Result(string documentId)
         {
             DocumentID = documentId;
-            StartPosition = new List<long>();
-            EndPosition = new List<long>();
         }
 
         public override int GetHashCode()

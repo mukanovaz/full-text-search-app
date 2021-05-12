@@ -10,10 +10,10 @@ namespace FullTextSearch.Indexer.Query
     class EvaluateTerms
     {
         private Index _index;
-        private LucenePreprocessing _preprocessing;
+        private IPreprocessing _preprocessing;
         private string _documentID;
 
-        public EvaluateTerms(Index index, LucenePreprocessing preprocessing, string documentID)
+        public EvaluateTerms(Index index, IPreprocessing preprocessing, string documentID)
         {
             _index = index; 
             _preprocessing = preprocessing;
@@ -29,9 +29,8 @@ namespace FullTextSearch.Indexer.Query
                 return false;
             }
 
-            Dictionary<int, IResult> documents = _index.GetPostingsFor(tokens[0]);
-
-            return documents.ContainsKey(Int32.Parse(_documentID));
+            Dictionary<int, Document> documents = _index.GetPostingsFor(tokens[0]);
+            return documents == null ? false : documents.ContainsKey(Int32.Parse(_documentID));
         }
     }
 }

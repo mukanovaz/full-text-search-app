@@ -38,6 +38,16 @@ namespace FullTextSearch.Core.Controllers
             _articleRepository.Save();
         }
 
+        public void AddArticles(List<Article> articles)
+        {
+            if (articles == null)
+            {
+                return;
+            }
+            _articleRepository.AddRange(articles);
+            _articleRepository.Save();
+        }
+
         public void DeleteArticle(int articleId)
         {
             _articleRepository.Delete(articleId);

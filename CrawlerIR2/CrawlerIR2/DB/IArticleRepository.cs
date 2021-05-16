@@ -10,6 +10,7 @@ namespace CrawlerIR2.DB
         void Insert(Article employee);
         void Update(Article employee);
         void Delete(int EmployeeID);
+        IEnumerable<Article> AddRange(List<Article> articles);
         void Save();
     }
 }

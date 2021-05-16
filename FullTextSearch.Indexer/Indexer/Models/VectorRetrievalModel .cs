@@ -3,7 +3,10 @@ using FullTextSearch.SimpleLogger;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FullTextSearch.Indexer.Indexer.Models
 {
@@ -13,9 +16,10 @@ namespace FullTextSearch.Indexer.Indexer.Models
         /// <summary>
         /// IDF
         /// </summary>
-        private Dictionary<string, double> _termsVectors; 
+        private ConcurrentDictionary<string, double> _termsVectors; 
         private Dictionary<long, Vector> _queryVector;
         private ConcurrentDictionary<long, Dictionary<long, Vector>> _documentVectors;
+        private Stopwatch _stopwatch = new Stopwatch();
 
         /// <summary>
         /// Preprocessing instance
@@ -31,62 +35,105 @@ namespace FullTextSearch.Indexer.Indexer.Models
         public List<IResult> EvaluateResults(string query, Index index)
         {
             _index = index;
-            // Get query tokens
-            int document_count = _index.DocCount;
 
+            Logger.Info("VectorRetrievalModel: Calculating cosine similarity");
+            // Learn model if not exist
+            if (_documentVectors == null)
+            {
+                LearningModel();
+            }
+
+            // Get results
+            List<IResult> results = QueryingModel(query);
+
+            // Sort results
+            var orderByDescendingResult = from s in results
+                                          orderby s.GetScore() descending
+                                          select s;
+            return orderByDescendingResult.ToList();
+        }
+
+        /// <summary>
+        /// Learn the weights of document index terms.
+        /// </summary>
+        private void LearningModel()
+        {
+            _termsVectors = new ConcurrentDictionary<string, double>();
+            _documentVectors = new ConcurrentDictionary<long, Dictionary<long, Vector>>();
+
+            // Calculating IDF
             Logger.Info("VectorRetrievalModel: Calculating IDF");
+            _stopwatch.Reset();
+            _stopwatch.Start();
             CalculateIDF();
+            _stopwatch.Stop();
+            Logger.Info("VectorRetrievalModel: Calculating IDF execution time is " + _stopwatch.ElapsedMilliseconds + " ms");
+
+            // Transforming docs to vectors
+            Logger.Info("VectorRetrievalModel: Transforming documents into vectors");
+            _stopwatch.Reset();
+            _stopwatch.Start();
+            GetDocumentVectors();
+            Logger.Info("VectorRetrievalModel: Transforming documents into vectors execution time is " + _stopwatch.ElapsedMilliseconds + " ms");
+        }
+
+        /// <summary>
+        /// Use the similarity function to find the relevant documents.
+        /// </summary>
+        private List<IResult> QueryingModel(string query)
+        {
+            if (_documentVectors == null || _documentVectors.Count() != _index.DocCount)
+            {
+                throw new ArgumentNullException("Documents vectors cannot be null");
+            }
+
+            _queryVector = new Dictionary<long, Vector>();
 
             Logger.Info("VectorRetrievalModel: Tranforming query to vector");
             Dictionary<string, int> queryDictionary = CreateQueryDictionary(Preprocessing.ParseTokens(query));
             _queryVector = TransformToQueryVector(queryDictionary, _index.TermsCount);
 
-            Logger.Info("VectorRetrievalModel: Calculating cosine similarity");
-
-            // Get document vector and find cos similarity
-            List<IResult> results = null;
-            if (_documentVectors == null)
-            {
-                _documentVectors = new ConcurrentDictionary<long, Dictionary<long, Vector>>();
-                results = GetDocumentVectorsAndCosSimilarity();
-            } else
-            {
-                results = GetDocumentVectorsAndCosSimilarity(isNewVector: false);
-            }
-
-            var orderByDescendingResult = from s in results
-                                          orderby s.GetScore() descending
-                                          select s;
-            Logger.Info("VectorRetrievalModel: Done");
-            // Sort
-            return orderByDescendingResult.ToList();
+            // Using the similarity function to find the relevant documents
+            Logger.Info("VectorRetrievalModel: Using the similarity function to find the relevant documents");
+            _stopwatch.Reset();
+            _stopwatch.Start();
+            List<IResult> result = CalculateSimilarityFunction();
+            Logger.Info("VectorRetrievalModel: Using the similarity function to find the relevant documents execution time is " + _stopwatch.ElapsedMilliseconds + " ms");
+            return result;
         }
 
-        private List<IResult> GetDocumentVectorsAndCosSimilarity(bool isNewVector = true, bool isNewCos = true)
+        private List<IResult> GetDocumentVectors()
         {
             var results = new List<IResult>();
-            foreach (var document in _index.IndexedDocuments)
+
+            _index.IndexedDocuments.AsParallel().ForAll(document => 
             {
                 Dictionary<long, Vector> docVector;
-                if (isNewVector)
-                {
-                    docVector = TransformToDocumentVectors(document);
-                    // Save whole vector to dictionary
-                    _documentVectors.TryAdd(document, docVector);
-                } else
-                {
-                    docVector = _documentVectors[document];
-                }
-
-                if (isNewCos)
-                {
-                    // Find cos similarity
-                    double cosSim = GetCos(docVector, _queryVector);
-                    results.Add(new Result(document.ToString()) { Score = cosSim });
-                }
-                
-            }
+                docVector = TransformToDocumentVectors(document.Value);
+                // Save whole vector to dictionary
+                _documentVectors.TryAdd(document.Value, docVector);
+            });
+            //foreach (var document in _index.IndexedDocuments)
+            //{
+            //    Dictionary<long, Vector> docVector;
+            //    docVector = TransformToDocumentVectors(document.Value);
+            //    // Save whole vector to dictionary
+            //    _documentVectors.TryAdd(document.Value, docVector);
+            //}
             return results;
+        }
+
+        private List<IResult> CalculateSimilarityFunction()
+        {
+            var results = new ConcurrentBag<IResult>();
+
+            _index.IndexedDocuments.AsParallel().ForAll(document =>
+            {
+                // Find cos similarity
+                double cosSim = GetCos(_documentVectors[document.Value], _queryVector);
+                results.Add(new Result(document.Value.ToString()) { Score = cosSim });
+            });
+            return results.ToList();
         }
 
         /// <summary>
@@ -138,23 +185,25 @@ namespace FullTextSearch.Indexer.Indexer.Models
         /// Traverse list of documents and create documents vectors
         /// </summary>
         private Dictionary<long, Vector> TransformToDocumentVectors(int document)
-        {   
-            int word_index = 0;
-            var vector = new Dictionary<long, Vector>();
-            foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
+        {
+            ConcurrentDictionary<long, Vector> vectors = new ConcurrentDictionary<long, Vector>();
+
+            Parallel.ForEach(_index.InvertedIndex, (entry, state, word_index) =>
             {
-                if (entry.Value.ContainsKey(document))
+                Document value = null;
+                if (entry.Value.TryGetValue(document, out value))
                 {
                     // Check if TF is not 0
-                    double tf_wght = entry.Value[document].TF > 0 ? 1 + Math.Log10(entry.Value[document].TF) : 0;
+                    double tf_wght = value.TF > 0 ? 1 + Math.Log10(value.TF) : 0;
                     double tf_idf = tf_wght * _termsVectors[entry.Key];
-                        
+
                     // Save vector value
-                    vector.Add(word_index, new Vector(word_index, tf_idf));
+                    vectors.TryAdd(word_index, new Vector(word_index, tf_idf));
                 }
-                word_index++;
-            }
-            return vector;
+            });
+
+            return vectors.ToDictionary(entry => entry.Key, 
+                entry => entry.Value);
         }
 
         /// <summary>
@@ -165,18 +214,22 @@ namespace FullTextSearch.Indexer.Indexer.Models
         {
             if (_termsVectors == null)
             {
-                _termsVectors = new Dictionary<string, double>();
-            } else
-            {
                 return;
             }
 
-            foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
+            _index.InvertedIndex.AsParallel().ForAll(entry => 
             {
                 double tmp = (double)_index.DocCount / (double)entry.Value.Count;
                 double idf = Math.Log10(tmp);
-                _termsVectors.Add(entry.Key, idf);
-            }
+                _termsVectors.TryAdd(entry.Key, idf);
+            });
+
+            //foreach (KeyValuePair<string, Dictionary<int, Document>> entry in _index.InvertedIndex)
+            //{
+            //    double tmp = (double)_index.DocCount / (double)entry.Value.Count;
+            //    double idf = Math.Log10(tmp);
+            //    _termsVectors.Add(entry.Key, idf);
+            //}
 
         }
 

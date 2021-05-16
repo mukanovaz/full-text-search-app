@@ -29,9 +29,9 @@ namespace FullTextSearch.UI.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
@@ -63,23 +63,23 @@ namespace FullTextSearch.UI.UserControls
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(170)))), ((int)(((byte)(168)))));
             this.panel1.Controls.Add(this.btnDelete);
             this.panel1.Controls.Add(this.btnNew);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1036, 51);
+            this.panel1.Size = new System.Drawing.Size(1036, 45);
             this.panel1.TabIndex = 21;
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
             this.btnDelete.FlatAppearance.BorderSize = 0;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnDelete.Location = new System.Drawing.Point(178, 15);
+            this.btnDelete.Location = new System.Drawing.Point(178, 12);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 5;
@@ -89,11 +89,11 @@ namespace FullTextSearch.UI.UserControls
             // 
             // btnNew
             // 
-            this.btnNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
+            this.btnNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
             this.btnNew.FlatAppearance.BorderSize = 0;
             this.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNew.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnNew.Location = new System.Drawing.Point(97, 15);
+            this.btnNew.Location = new System.Drawing.Point(97, 12);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 23);
             this.btnNew.TabIndex = 4;
@@ -103,11 +103,11 @@ namespace FullTextSearch.UI.UserControls
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnSave.Location = new System.Drawing.Point(16, 15);
+            this.btnSave.Location = new System.Drawing.Point(16, 12);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 3;
@@ -123,14 +123,14 @@ namespace FullTextSearch.UI.UserControls
             this.dgvDocuments.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvDocuments.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDocuments.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 8.25F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDocuments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Consolas", 8.25F);
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDocuments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgvDocuments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDocuments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ArticleTitle});
@@ -138,31 +138,31 @@ namespace FullTextSearch.UI.UserControls
             this.dgvDocuments.DataMember = "Article";
             this.dgvDocuments.Dock = System.Windows.Forms.DockStyle.Left;
             this.dgvDocuments.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
-            this.dgvDocuments.Location = new System.Drawing.Point(0, 51);
+            this.dgvDocuments.Location = new System.Drawing.Point(0, 45);
             this.dgvDocuments.MultiSelect = false;
             this.dgvDocuments.Name = "dgvDocuments";
             this.dgvDocuments.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.dgvDocuments.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 8.25F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDocuments.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Consolas", 8.25F);
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDocuments.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvDocuments.RowHeadersVisible = false;
-            this.dgvDocuments.Size = new System.Drawing.Size(400, 371);
+            this.dgvDocuments.Size = new System.Drawing.Size(400, 377);
             this.dgvDocuments.TabIndex = 22;
             this.dgvDocuments.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDocuments_CellEnter);
             // 
             // ArticleTitle
             // 
             this.ArticleTitle.DataPropertyName = "Title";
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
-            this.ArticleTitle.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(89)))), ((int)(((byte)(69)))));
+            this.ArticleTitle.DefaultCellStyle = dataGridViewCellStyle11;
             this.ArticleTitle.HeaderText = "Article title";
             this.ArticleTitle.Name = "ArticleTitle";
             this.ArticleTitle.ReadOnly = true;
@@ -182,9 +182,9 @@ namespace FullTextSearch.UI.UserControls
             this.panel2.Controls.Add(this.tbCategory);
             this.panel2.Controls.Add(this.tbArticles);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(400, 51);
+            this.panel2.Location = new System.Drawing.Point(400, 45);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(636, 371);
+            this.panel2.Size = new System.Drawing.Size(636, 377);
             this.panel2.TabIndex = 23;
             // 
             // tbViews
@@ -281,7 +281,7 @@ namespace FullTextSearch.UI.UserControls
             this.tbArticles.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbArticles.Location = new System.Drawing.Point(20, 150);
             this.tbArticles.Name = "tbArticles";
-            this.tbArticles.Size = new System.Drawing.Size(586, 203);
+            this.tbArticles.Size = new System.Drawing.Size(586, 249);
             this.tbArticles.TabIndex = 0;
             this.tbArticles.Text = "";
             // 

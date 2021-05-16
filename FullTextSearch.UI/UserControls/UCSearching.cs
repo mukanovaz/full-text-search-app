@@ -15,6 +15,7 @@ namespace FullTextSearch.UI
         static UCDocumentsView _ucDocumentsView;
         private bool _isLoaded = false;
         private List<Article> _articles;
+        private Form1 _form;
 
         public Panel PanelContainer
         {
@@ -35,10 +36,11 @@ namespace FullTextSearch.UI
             }
         }
 
-        public UCSearching()
+        public UCSearching(Form1 form1)
         {
             InitializeComponent();
             cmbSearchModel.SelectedIndex = 1;
+            _form = form1;
         }
 
         private void SearchingPanel_Load(object sender, EventArgs e)
@@ -63,6 +65,8 @@ namespace FullTextSearch.UI
         private void btnSearch_Click(object sender, EventArgs e)
         {
             pnlLoading.Visible = true;
+            _form.LockButtonsBeforeSearch(false);
+            pnlSearch.Enabled = false;
             SearchingWorker.RunWorkerAsync();
         }
 
@@ -94,6 +98,8 @@ namespace FullTextSearch.UI
             }
            
             occurLabel.Text = _articles.Count.ToString();
+            _form.LockButtonsBeforeSearch(true);
+            pnlSearch.Enabled = true;
         }
 
         private void nudResults_ValueChanged(object sender, EventArgs e)

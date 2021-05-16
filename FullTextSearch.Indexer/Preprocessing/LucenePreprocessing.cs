@@ -18,6 +18,8 @@ namespace FullTextSearch.Indexer
 
         private readonly IStemmer _stemmer;
 
+        public bool IsStemerSetting { get; set; } = true;
+
         public LucenePreprocessing(bool removeAccentsBeforeStemming = false, bool removeAccentsAfterStemming = true, bool toLower = true)
         {
             Analyzer = new CzechAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
@@ -82,8 +84,11 @@ namespace FullTextSearch.Indexer
                 int start = offsetAtt.StartOffset;
                 int end = offsetAtt.EndOffset;
 
-                token = _stemmer.Stem(token);
-
+                if (IsStemerSetting)
+                {
+                    token = _stemmer.Stem(token);
+                }
+                
                 // Remove html tags
                 if (token == "h1" || token == "b" || token == "blockquote")
                     continue;

@@ -22,10 +22,15 @@ namespace CrawlerIR2.DB
             if (employee == null) return;
             _context.Articles.Remove(employee);
         }
-
+         
         public IEnumerable<Article> GetAll()
         {
             return _context.Articles;
+        }
+
+        public IEnumerable<Article> AddRange(List<Article> articles)
+        {
+            return _context.Articles.AddRange(articles);
         }
 
         public Article GetById(int articleId)

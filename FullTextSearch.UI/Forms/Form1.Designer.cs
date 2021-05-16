@@ -37,7 +37,6 @@ namespace FullTextSearch
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.panelContainer = new System.Windows.Forms.Panel();
-            this.dataSourcePanel1 = new FullTextSearch.UI.UCDataSource();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -154,16 +153,7 @@ namespace FullTextSearch
             this.panelContainer.Name = "panelContainer";
             this.panelContainer.Size = new System.Drawing.Size(1036, 510);
             this.panelContainer.TabIndex = 11;
-            // 
-            // dataSourcePanel1
-            // 
-            this.dataSourcePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
-            this.dataSourcePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataSourcePanel1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataSourcePanel1.Location = new System.Drawing.Point(192, 0);
-            this.dataSourcePanel1.Name = "dataSourcePanel1";
-            this.dataSourcePanel1.Size = new System.Drawing.Size(1036, 510);
-            this.dataSourcePanel1.TabIndex = 12;
+           
             // 
             // Form1
             // 

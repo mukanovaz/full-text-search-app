@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CrawlerIR2.Models
 {
-    public class Article : IDocument
+    public class Article : IDocument, ICloneable
     {
         private DateTime? dateCreated = null;
 
@@ -36,6 +36,10 @@ namespace CrawlerIR2.Models
         public string Text { get; set; }
         public string Url { get; set; }
 
+        public object Clone()
+        {
+            return (Article) MemberwiseClone();
+        }
 
         public DateTime GetDate()
         {

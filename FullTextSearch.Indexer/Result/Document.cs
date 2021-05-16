@@ -37,9 +37,9 @@ namespace FullTextSearch.Indexer
         {
             DocumentID = doc_id;
             TF = 1;
-            SetPositions(startPosition, endPosition);
             StartPosition = new List<long>();
             EndPosition = new List<long>();
+            SetPositions(startPosition, endPosition);
         }
 
         public List<long> GetPositionEnd()

@@ -29,38 +29,38 @@ namespace FullTextSearch.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlSearch = new System.Windows.Forms.Panel();
             this.nudResults = new System.Windows.Forms.NumericUpDown();
             this.tbSearchText = new System.Windows.Forms.TextBox();
             this.cmbSearchModel = new System.Windows.Forms.ComboBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.occurLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.pnlLoading = new System.Windows.Forms.Panel();
             this.lbProgress = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SearchingWorker = new System.ComponentModel.BackgroundWorker();
-            this.occurLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.pnlSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudResults)).BeginInit();
             this.panelContainer.SuspendLayout();
             this.pnlLoading.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlSearch
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
-            this.panel1.Controls.Add(this.nudResults);
-            this.panel1.Controls.Add(this.tbSearchText);
-            this.panel1.Controls.Add(this.cmbSearchModel);
-            this.panel1.Controls.Add(this.btnSearch);
-            this.panel1.Controls.Add(this.occurLabel);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1023, 57);
-            this.panel1.TabIndex = 10;
+            this.pnlSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(210)))), ((int)(((byte)(202)))));
+            this.pnlSearch.Controls.Add(this.nudResults);
+            this.pnlSearch.Controls.Add(this.tbSearchText);
+            this.pnlSearch.Controls.Add(this.cmbSearchModel);
+            this.pnlSearch.Controls.Add(this.btnSearch);
+            this.pnlSearch.Controls.Add(this.occurLabel);
+            this.pnlSearch.Controls.Add(this.label2);
+            this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlSearch.Location = new System.Drawing.Point(0, 0);
+            this.pnlSearch.Name = "pnlSearch";
+            this.pnlSearch.Size = new System.Drawing.Size(1023, 57);
+            this.pnlSearch.TabIndex = 10;
             // 
             // nudResults
             // 
@@ -117,6 +117,25 @@ namespace FullTextSearch.UI
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // occurLabel
+            // 
+            this.occurLabel.AutoSize = true;
+            this.occurLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.occurLabel.Location = new System.Drawing.Point(665, 24);
+            this.occurLabel.Name = "occurLabel";
+            this.occurLabel.Size = new System.Drawing.Size(0, 13);
+            this.occurLabel.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(598, 24);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Matches:";
+            // 
             // panelContainer
             // 
             this.panelContainer.Controls.Add(this.pnlLoading);
@@ -161,37 +180,18 @@ namespace FullTextSearch.UI
             this.SearchingWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.SearchingWorker_DoWork);
             this.SearchingWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.SearchingWorker_RunWorkerCompleted);
             // 
-            // occurLabel
-            // 
-            this.occurLabel.AutoSize = true;
-            this.occurLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.occurLabel.Location = new System.Drawing.Point(665, 24);
-            this.occurLabel.Name = "occurLabel";
-            this.occurLabel.Size = new System.Drawing.Size(0, 13);
-            this.occurLabel.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(598, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Occurance:";
-            // 
             // UCSearching
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
             this.Controls.Add(this.panelContainer);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlSearch);
             this.Name = "UCSearching";
             this.Size = new System.Drawing.Size(1023, 515);
             this.Load += new System.EventHandler(this.SearchingPanel_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnlSearch.ResumeLayout(false);
+            this.pnlSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudResults)).EndInit();
             this.panelContainer.ResumeLayout(false);
             this.pnlLoading.ResumeLayout(false);
@@ -202,7 +202,7 @@ namespace FullTextSearch.UI
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlSearch;
         private System.Windows.Forms.TextBox tbSearchText;
         private System.Windows.Forms.ComboBox cmbSearchModel;
         private System.Windows.Forms.Button btnSearch;

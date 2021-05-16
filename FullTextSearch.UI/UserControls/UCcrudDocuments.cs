@@ -60,6 +60,7 @@ namespace FullTextSearch.UI.UserControls
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (_bindingSource.DataSource == null) return;
             string newText = new CrawlerMotorkari().BuildText(tbTitle.Text, tbCategory.Text, tbAuthor.Text, dtpDate.Value.Date.ToString("dd.MM.yyyy"), tbViews.Text, tbArticles.Text);
 
             // Update article in database
@@ -103,6 +104,8 @@ namespace FullTextSearch.UI.UserControls
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (_bindingSource.DataSource == null) return;
+
             // Update in database
             MainController.Instance.RunDatabaseUtility(3, Int32.Parse(_lastArticleId));
 
@@ -116,6 +119,8 @@ namespace FullTextSearch.UI.UserControls
         private bool _isNew = false;
         private void btnNew_Click(object sender, EventArgs e)
         {
+            if (_bindingSource.DataSource == null) return;
+
             if (!_isNew)
             {
                 tbTitle.Text = string.Empty;

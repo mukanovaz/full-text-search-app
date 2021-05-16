@@ -26,11 +26,11 @@ namespace FullTextSearch.Indexer.Indexer.Models
             Logger.Info("BooleanRetrievalModel: parsing query");
             var q = ParseQuery(query);
             Logger.Info("BooleanRetrievalModel: evaluating terms");
-            foreach (int doc in index.IndexedDocuments)
+            foreach (var doc in index.IndexedDocuments)
             {
-                if (q.Eval(new EvaluateTerms(index, _preprocessing, doc.ToString())))
+                if (q.Eval(new EvaluateTerms(index, _preprocessing, doc.Value.ToString())))
                 {
-                    results.Add(new Result(doc.ToString()));
+                    results.Add(new Result(doc.Value.ToString()));
                 }
             }
             Logger.Info("BooleanRetrievalModel: done");

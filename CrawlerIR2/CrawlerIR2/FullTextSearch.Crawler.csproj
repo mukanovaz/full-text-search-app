@@ -83,7 +83,6 @@
     <Compile Include="DB\ArticleRepository.cs" />
     <Compile Include="DB\IArticleRepository.cs" />
     <Compile Include="Interface\IDocument.cs" />
-    <Compile Include="Models\ArticleLight.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="DB\Context .cs" />

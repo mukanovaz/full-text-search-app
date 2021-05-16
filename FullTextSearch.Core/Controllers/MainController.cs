@@ -8,6 +8,7 @@ using FullTextSearch.SimpleLogger;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace FullTextSearch.Core
 {
@@ -19,7 +20,9 @@ namespace FullTextSearch.Core
         public static Index Index { get; private set; }
 
         private static IPreprocessing _preprocessing;
+
         private VectorRetrievalModel _vectorRetrievalModel;
+        private bool _isUsingStemmer = true;
 
         private static IndexerController _indexerController;
         private static CrawlerController _crawlerController;
@@ -60,7 +63,7 @@ namespace FullTextSearch.Core
             return _indexerController.LastArticles;
         }
 
-        public List<Article> RunCrawler(bool is_exist, ICrawler crawler = null, string db_name = "", BackgroundWorker backgroundWorker = null)
+        public List<Article> RunCrawler(bool is_exist, string datasource, ICrawler crawler = null, string db_name = "", BackgroundWorker backgroundWorker = null)
         {
             if (is_exist && db_name == "" && crawler != null && backgroundWorker == null) return null;
             if (!is_exist && db_name != "" && crawler == null && backgroundWorker != null) return null;
@@ -73,15 +76,27 @@ namespace FullTextSearch.Core
                 backgroundWorker.ReportProgress(1);
 
                 // Get data from files and save to database if not exist
-                Articles = _crawlerController.GetDataFromFiles(_databaseController.GetAllArticles(), _databaseController);
+                if (datasource == "Motorkaricz")
+                {
+                    _crawlerController.ReadDataFromDbOrFromFile(_databaseController, 
+                        new string[] {
+                            @"CrawlerIR_TidyText.xml",
+                            @"CrawlerIR_TidyText64.xml",
+                            @"CrawlerIR_TidyText128.xml",
+                            @"CrawlerIR_TidyText192.xml"
+                        });
+                } else if (datasource == "Czech data")
+                {
+                    _crawlerController.ReadDataFromDbOrFromFile(_databaseController,
+                        new string[] {
+                            @"czechData.xml"
+                        });
+                }
+               
                 backgroundWorker.ReportProgress(2);
             }
-            else
-            {
-                // Run crawler
-                Articles = _crawlerController.GetDataFromWeb(crawler, _databaseController);
-            }
 
+            Articles = _databaseController.GetAllArticles().ToList();
             if (Articles == null) return null;
 
             // Index data
@@ -220,9 +235,9 @@ namespace FullTextSearch.Core
             }
 
             List<Article> articles = new List<Article>();
-            foreach (int document in Index.IndexedDocuments)
+            foreach (var document in Index.IndexedDocuments)
             {
-                articles.Add(_databaseController.GetArticleById(document));
+                articles.Add(_databaseController.GetArticleById(document.Value));
             }
             return articles;
         }
@@ -230,6 +245,11 @@ namespace FullTextSearch.Core
         public Index GetIndex()
         {
             return _indexerController.Index;
+        }
+
+        public void SetStemmerSetting(bool isStemmer)
+        {
+            _preprocessing.IsStemerSetting = isStemmer;
         }
     }
 }

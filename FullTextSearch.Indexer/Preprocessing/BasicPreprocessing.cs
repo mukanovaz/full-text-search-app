@@ -27,6 +27,8 @@ namespace FullTextSearch.Indexer
             _toLowercase = toLowercase;
         }
 
+        public bool IsStemerSetting { get; set; }
+
         public string GetProcessedForm(string text)
         {
             if (_toLowercase)

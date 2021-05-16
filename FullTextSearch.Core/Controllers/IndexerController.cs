@@ -7,6 +7,7 @@ using FullTextSearch.SimpleLogger;
 using FullTextSearch.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -17,6 +18,7 @@ namespace FullTextSearch.Core
         public Index Index;
         private IPreprocessing _preprocessing;
         private VectorRetrievalModel _vectorRetrievalModel;
+        private Stopwatch _stopwatch = new Stopwatch();
 
         public List<Article> LastArticles { get; private set; }
 
@@ -27,13 +29,10 @@ namespace FullTextSearch.Core
             Logger.Info("IndexerController: start indexing..");
             Index = new Index(_preprocessing);
 
+            _stopwatch.Start();
             (Index as IIndexer).Index(articles);
-
-            Logger.Info("IndexerController: index is ready.");
-
-            var thread = new Thread(CalculateIDF);
-            thread.IsBackground = true;
-            thread.Start();
+            _stopwatch.Stop();
+            Logger.Info("IndexerController: index execution time is " + _stopwatch.ElapsedMilliseconds + " ms");
 
             return Index;
         }
@@ -41,12 +40,6 @@ namespace FullTextSearch.Core
         private void IndexDocuments(List<Article> articles)
         {
             (Index as IIndexer).Index(articles);
-        }
-
-        private void CalculateIDF()
-        {
-            _vectorRetrievalModel.Index = Index;
-            _vectorRetrievalModel.CalculateIDF();
         }
 
         internal List<Article> Search(string query,
@@ -67,7 +60,7 @@ namespace FullTextSearch.Core
                 string id = res.GetDocumentID();
 
                 // Get article from database
-                Article article = databaseController.GetArticleById(Int32.Parse(id));
+                Article article = (Article) databaseController.GetArticleById(Int32.Parse(id)).Clone();
                 if (article == null) return null;
                 // Higtlight query text
                 article.Text = DataReader.Instance.AddHighlightToText(query, Index, article, _preprocessing);

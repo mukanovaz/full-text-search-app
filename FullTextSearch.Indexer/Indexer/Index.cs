@@ -2,7 +2,9 @@
 using CrawlerIR2.Models;
 using FullTextSearch.Indexer.Indexer.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FullTextSearch.Indexer
@@ -17,20 +19,20 @@ namespace FullTextSearch.Indexer
         /// <summary>
         /// Indexed documents
         /// </summary>
-        private readonly HashSet<int> _indexedDocuments = new HashSet<int>();
+        private readonly ConcurrentDictionary<int, int> _indexedDocuments;
         /// <summary>
         /// Index
         /// <Term, <doc_id, Result>> 
         /// </summary>
-        private readonly SortedDictionary<string, Dictionary<int, Document>> _index = new SortedDictionary<string, Dictionary<int, Document>>();
+        private readonly ConcurrentDictionary<string, Dictionary<int, Document>> _index;
 
         #endregion
 
         #region PUBLIC_VARS
-        public HashSet<int> IndexedDocuments => _indexedDocuments;
+        public ConcurrentDictionary<int, int> IndexedDocuments => _indexedDocuments;
         public IReadOnlyDictionary<string, Dictionary<int, Document>> InvertedIndex { get => _index; }
-        public int TermsCount { get; private set; } = 0;
-        public int DocCount { get; private set; } = 0;
+        public int TermsCount { get; private set; }
+        public int DocCount { get; private set; }
         public IRetrievalModel RetrievalModel { get; set; }
         #endregion
 
@@ -41,6 +43,11 @@ namespace FullTextSearch.Indexer
         public Index(IPreprocessing preprocessing)
         {
             _preprocessing = preprocessing;
+            _index = new ConcurrentDictionary<string, Dictionary<int, Document>>();
+            _indexedDocuments = new ConcurrentDictionary<int, int>();
+
+            TermsCount = 0;
+            DocCount = 0;
         }
 
         /// <summary>
@@ -66,22 +73,26 @@ namespace FullTextSearch.Indexer
                 else
                 {
                     // Add new document
-                    _index[term].Add(doc_id, new Document(doc_id, positionStart, positionEnd));
+                    Dictionary<int, Document> value = null;
+                    if (_index.TryGetValue(term, out value))
+                    {
+                        value.Add(doc_id, new Document(doc_id, positionStart, positionEnd));
+                    }
                 }
             }
             else
             {
                 // Add new term to Index
-                _index.Add(
+                _index.TryAdd(
                     term, new Dictionary<int, Document>() {
                         { doc_id, new Document(doc_id, positionStart, positionEnd) }
                     }
                 );
                 TermsCount++;
             }
-            if (!_indexedDocuments.Contains(doc_id))
+            if (!_indexedDocuments.ContainsKey(doc_id))
             {
-                _indexedDocuments.Add(doc_id);
+                _indexedDocuments.TryAdd(doc_id, doc_id);
                 DocCount++;
             }
         }
@@ -99,8 +110,9 @@ namespace FullTextSearch.Indexer
             {
                 if (_index[entry.Key].ContainsKey(article.ArticleId))
                 {
+                    int v = 0;
                     _index[entry.Key].Remove(article.ArticleId);
-                    _indexedDocuments.Remove(article.ArticleId);
+                    _indexedDocuments.TryRemove(article.ArticleId, out v);
                 }
             }
 
@@ -145,10 +157,10 @@ namespace FullTextSearch.Indexer
         /// <param name="documents">List of documents</param>
         void IIndexer.Index(List<Article> documents)
         {
-            for (int i = 0; i < documents.Count; i++)
+            documents.AsParallel().ForAll(document => 
             {
-                _preprocessing.ParseTokens(documents[i].GetText(), documents[i], this);
-            }
+                _preprocessing.ParseTokens(document.GetText(), document, this);
+            });
         }
 
         /// <summary>
@@ -159,15 +171,16 @@ namespace FullTextSearch.Indexer
         {
             _preprocessing.ParseTokens(document.GetText(), document, this);
         }
-
+        
         public void Remove(int articleId)
         {
             foreach (var entry in _index)
             {
                 if (_index[entry.Key].ContainsKey(articleId))
                 {
+                    int v = 0;
                     _index[entry.Key].Remove(articleId);
-                    _indexedDocuments.Remove(articleId);
+                    _indexedDocuments.TryRemove(articleId, out v);
                 }
             }
         }

@@ -6,12 +6,11 @@ namespace FullTextSearch.Indexer
 {
     public class CzechStemmerAggressive : IStemmer
     {
-        private StringBuilder sb = new StringBuilder();
-
         public CzechStemmerAggressive() { }
 
         public string Stem(string input)
         {
+            StringBuilder sb = new StringBuilder();
             input = input.ToLower();
 
             // Reset string buffer

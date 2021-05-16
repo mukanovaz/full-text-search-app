@@ -12,11 +12,24 @@ namespace FullTextSearch
     {
 
         private static Form1 _obj;
+        private LoggerForm _loggerForm;
         private static UCDataSource _ucDataSource;
         private static UCSearching _ucSearching;
+        private static UCSettings _ucSettings;
         private static UCcrudDocuments _uccrudDocuments;
         private readonly Color _firstColor = Color.FromArgb(247, 243, 233);  // Main buttons
         private readonly Color _secondColor = Color.FromArgb(94, 170, 168);  // Other buttons
+
+        internal void MakeLogsVisible(bool isVisible)
+        {
+            if (isVisible)
+            {
+                _loggerForm.Show();
+            } else
+            {
+                _loggerForm.Hide();
+            }
+        }
 
         public static Form1 Instance
         {
@@ -35,16 +48,31 @@ namespace FullTextSearch
             InitializeComponent();
 
             // Init logger form
-            LoggerForm loggerForm = new LoggerForm();
-            loggerForm.Show();
+            _loggerForm = new LoggerForm();
+            _loggerForm.Show();
             // Redirect console output to TextBox
-            Console.SetOut(new ControlWriter(loggerForm.LoggerTextBox));
+            Console.SetOut(new ControlWriter(_loggerForm.LoggerTextBox));
+
+            LockButtonsBeforeDataSource(false);
         }
 
         public Panel PanelContainer
         {
             get { return panelContainer; }
             set { panelContainer = value; }
+        }
+
+        public UCSettings SettingsUC
+        {
+            get
+            {
+                if (_ucSettings == null)
+                {
+                    _ucSettings = new UCSettings(this);
+                    _ucSettings.Dock = DockStyle.Fill;
+                }
+                return _ucSettings;
+            }
         }
 
         public UCcrudDocuments CRUDDocuments
@@ -66,7 +94,7 @@ namespace FullTextSearch
             {
                 if (_ucDataSource == null)
                 {
-                    _ucDataSource = new UCDataSource();
+                    _ucDataSource = new UCDataSource(this);
                     _ucDataSource.Dock = DockStyle.Fill;
                 }
                 return _ucDataSource;
@@ -79,7 +107,7 @@ namespace FullTextSearch
             {
                 if (_ucSearching == null)
                 {
-                    _ucSearching = new UCSearching();
+                    _ucSearching = new UCSearching(this);
                     _ucSearching.Dock = DockStyle.Fill;
                 }
                 return _ucSearching;
@@ -93,6 +121,7 @@ namespace FullTextSearch
             PanelContainer.Controls.Add(DataSourceUC);
             PanelContainer.Controls.Add(SearchingUC);
             PanelContainer.Controls.Add(CRUDDocuments);
+            PanelContainer.Controls.Add(SettingsUC);
 
             ShowUserControl(DataSourceUC);
         }
@@ -154,6 +183,8 @@ namespace FullTextSearch
             btnDataSource.ForeColor = Color.White;
             btnSearch.ForeColor = Color.White;
             btnDocuments.ForeColor = Color.White;
+
+            ShowUserControl(SettingsUC);
         }
 
         private void btnDataSource_Click(object sender, EventArgs e)
@@ -168,9 +199,11 @@ namespace FullTextSearch
             btnSearch.BackColor = _secondColor;
             btnDocuments.BackColor = _secondColor;
             btnDocuments.BackColor = _secondColor;
+            btnSettings.BackColor = _secondColor;
             btnSearch.ForeColor = Color.White;
             btnDocuments.ForeColor = Color.White;
             btnDocuments.ForeColor = Color.White;
+            btnSettings.ForeColor = Color.White;
 
             ShowUserControl(DataSourceUC);
         }
@@ -186,6 +219,20 @@ namespace FullTextSearch
                 }
             }
            
+        }
+
+        public void LockButtonsBeforeDataSource(bool isLock)
+        {
+            btnSearch.Enabled = isLock;
+            btnDocuments.Enabled = isLock;
+            //btnSettings.Enabled = isLock;
+        }
+
+        public void LockButtonsBeforeSearch(bool isLock)
+        {
+            btnDataSource.Enabled = isLock;
+            btnDocuments.Enabled = isLock;
+            //btnSettings.Enabled = isLock;
         }
     }
 }

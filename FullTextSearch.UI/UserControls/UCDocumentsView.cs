@@ -22,13 +22,15 @@ namespace FullTextSearch.UI
         {
             if (dgvDocuments.SelectedCells.Count > 0)
             {
-                int selectedrowindex = dgvDocuments.SelectedCells[0].RowIndex;
-                DataGridViewRow selectedRow = dgvDocuments.Rows[selectedrowindex];
-                string text = Convert.ToString(selectedRow.Cells["Text"].Value);
-                if (text == null) return;
-                webBrowser.DocumentText = text;
-
-                
+                try
+                {
+                    int selectedrowindex = dgvDocuments.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = dgvDocuments.Rows[selectedrowindex];
+                    string text = Convert.ToString(selectedRow.Cells["Text"].Value);
+                    if (text == null) return;
+                    webBrowser.DocumentText = text;
+                }
+                catch { }
             }
         }
 

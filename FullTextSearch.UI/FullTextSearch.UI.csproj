@@ -76,12 +76,6 @@
     <Compile Include="UserControls\TextViewer.Designer.cs">
       <DependentUpon>TextViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\UCCrawlerSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\UCCrawlerSettings.Designer.cs">
-      <DependentUpon>UCCrawlerSettings.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UCcrudDocuments.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -106,6 +100,12 @@
     <Compile Include="UserControls\UCSearching.Designer.cs">
       <DependentUpon>UCSearching.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCSettings.Designer.cs">
+      <DependentUpon>UCSettings.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Forms\LoggerForm.resx">
       <DependentUpon>LoggerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,9 +125,6 @@
     <EmbeddedResource Include="UserControls\TextViewer.resx">
       <DependentUpon>TextViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\UCCrawlerSettings.resx">
-      <DependentUpon>UCCrawlerSettings.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCcrudDocuments.resx">
       <DependentUpon>UCcrudDocuments.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +137,9 @@
     <EmbeddedResource Include="UserControls\UCSearching.resx">
       <DependentUpon>UCSearching.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSettings.resx">
+      <DependentUpon>UCSettings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

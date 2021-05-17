@@ -14,6 +14,8 @@ namespace FullTextSearch.Indexer.Indexer.Models
         private const string _orKW = "OR";
         private const string BOOL_QUERY = @"(\()|(\))|(AND)|(OR)|(NOT)";
         private readonly IPreprocessing _preprocessing;
+        private HashSet<int> _documents;
+        private int _documentsCount;
 
         public BooleanRetrievalModel(IPreprocessing preprocessing)
         {
@@ -23,18 +25,38 @@ namespace FullTextSearch.Indexer.Indexer.Models
         List<IResult> IRetrievalModel.EvaluateResults(string query, Index index)
         {
             List<IResult> results = new List<IResult>();
+            _documents = GetDocuments(index);
+
             Logger.Info("BooleanRetrievalModel: parsing query");
             var q = ParseQuery(query);
             Logger.Info("BooleanRetrievalModel: evaluating terms");
-            foreach (var doc in index.IndexedDocuments)
+            for (int i = 1; i < _documentsCount + 1; i++)
             {
-                if (q.Eval(new EvaluateTerms(index, _preprocessing, doc.Value.ToString())))
+                if (q.Eval(new EvaluateTerms(index, _preprocessing, i.ToString())))
                 {
-                    results.Add(new Result(doc.Value.ToString()));
+                    results.Add(new Result(i.ToString()));
                 }
             }
             Logger.Info("BooleanRetrievalModel: done");
             return results;
+        }
+
+        private HashSet<int> GetDocuments(Index index)
+        {
+            var result = new HashSet<int>();
+            _documentsCount = 0;
+            foreach (var entry in index.InvertedIndex)
+            {
+                foreach (var docEntry in entry.Value)
+                {
+                    if (!result.Contains(docEntry.Key))
+                    {
+                        result.Add(docEntry.Key);
+                        _documentsCount++;
+                    }
+                }
+            }
+            return result;
         }
 
         private string[] GetTokens(string query)

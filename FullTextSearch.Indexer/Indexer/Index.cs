@@ -17,10 +17,6 @@ namespace FullTextSearch.Indexer
         /// </summary>
         private readonly IPreprocessing _preprocessing;
         /// <summary>
-        /// Indexed documents
-        /// </summary>
-        private readonly ConcurrentDictionary<int, int> _indexedDocuments;
-        /// <summary>
         /// Index
         /// <Term, <doc_id, Result>> 
         /// </summary>
@@ -29,10 +25,8 @@ namespace FullTextSearch.Indexer
         #endregion
 
         #region PUBLIC_VARS
-        public ConcurrentDictionary<int, int> IndexedDocuments => _indexedDocuments;
         public IReadOnlyDictionary<string, Dictionary<int, Document>> InvertedIndex { get => _index; }
         public int TermsCount { get; private set; }
-        public int DocCount { get; private set; }
         public IRetrievalModel RetrievalModel { get; set; }
         #endregion
 
@@ -44,10 +38,8 @@ namespace FullTextSearch.Indexer
         {
             _preprocessing = preprocessing;
             _index = new ConcurrentDictionary<string, Dictionary<int, Document>>();
-            _indexedDocuments = new ConcurrentDictionary<int, int>();
 
             TermsCount = 0;
-            DocCount = 0;
         }
 
         /// <summary>
@@ -90,11 +82,6 @@ namespace FullTextSearch.Indexer
                 );
                 TermsCount++;
             }
-            if (!_indexedDocuments.ContainsKey(doc_id))
-            {
-                _indexedDocuments.TryAdd(doc_id, doc_id);
-                DocCount++;
-            }
         }
 
         /// <summary>
@@ -112,7 +99,6 @@ namespace FullTextSearch.Indexer
                 {
                     int v = 0;
                     _index[entry.Key].Remove(article.ArticleId);
-                    _indexedDocuments.TryRemove(article.ArticleId, out v);
                 }
             }
 
@@ -180,7 +166,6 @@ namespace FullTextSearch.Indexer
                 {
                     int v = 0;
                     _index[entry.Key].Remove(articleId);
-                    _indexedDocuments.TryRemove(articleId, out v);
                 }
             }
         }

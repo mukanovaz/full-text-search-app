@@ -227,21 +227,6 @@ namespace FullTextSearch.Core
             }
         }
 
-        public List<Article> GetDocuments()
-        {
-            if (_databaseController == null)
-            {
-                return null;
-            }
-
-            List<Article> articles = new List<Article>();
-            foreach (var document in Index.IndexedDocuments)
-            {
-                articles.Add(_databaseController.GetArticleById(document.Value));
-            }
-            return articles;
-        }
-
         public Index GetIndex()
         {
             return _indexerController.Index;
